@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<meta name="author" content="Adriano Rivolli, Luis Paulo F. Garcia and Andre C. P. L. F. de Carvalho" />
+
+<meta name="date" content="2017-01-31" />
+
+<title>mfe: Meta-Feature Extractor</title>
+
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+
+
+<link href="data:text/css;charset=utf-8,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23header%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%20code%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" rel="stylesheet" type="text/css" />
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">mfe: Meta-Feature Extractor</h1>
+<h4 class="author"><em>Adriano Rivolli, Luis Paulo F. Garcia and Andre C. P. L. F. de Carvalho</em></h4>
+<h4 class="date"><em>2017-01-31</em></h4>
+
+
+
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p>Extracts meta-features from datasets to support the design of recommendation systems based on Meta-Learning (MtL). The meta-features, also called characterization measures, are able to characterize the complexity of datasets and to provide estimates of algorithm performance. The package contains not only the standard characterization measures, but also more recent characterization measures. By making available a large set of meta-feature extraction functions, this package allows a comprehensive data characterization, a deep data exploration and a large number of MtL-based data analysis.</p>
+<p>In MtL, meta-features are designed to extract general properties able to characterize datasets. The meta-feature values should provide relevant evidences about the performance of algorithms, allowing the design of MtL-based recommendation systems. Thus, these measures must be able to predict, with a low computational cost, the performance of the algorithms under evaluation. In this package, the meta-feature measures are divided into six groups:</p>
+<ul>
+<li><strong>General</strong>: General information related to the dataset, also known as simple measures, such as number of instances, attributes and classes.</li>
+<li><strong>Statistical</strong>: Standard statistical measures to describe the numerical properties of a distribution of data.</li>
+<li><strong>Discriminant</strong>: Measures computed using the discriminant analysis.</li>
+<li><strong>Information-theoretic</strong>: Particularly appropriate to describe discrete (categorical) attributes and their relationship with the classes.</li>
+<li><strong>Decision Tree Model-based</strong>: Measures designed to extract characteristics like the depth, the shape and size of a Decision Tree (DT) model induced from a dataset.</li>
+<li><strong>Landmarking</strong>: Represents the performance of some simple and efficient learning algorithms.</li>
+</ul>
+<p>In the following sections we will briefly introduce how to use the <code>mfe</code> package to extract all the measures using standard methods as well as to extract specific measures using methods for each group. Once the package is loaded, the vignette is also available inside R with the command <code>browseVignettes</code>.</p>
+</div>
+<div id="extracting-meta-features" class="section level1">
+<h1>Extracting meta-features</h1>
+<p>The standard way to extract meta-features is using the <code>metafeatures</code> methods. The method can be used by a symbolic description of the model (formula) or by a data frame. The parameters are the dataset and the group of measures to be extracted. To extract all the measures, the parameter <code>group</code> needs to be set as <code>all</code>. For instance:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(mfe)
+
+## Extract all measures using formula
+iris.info &lt;-<span class="st"> </span><span class="kw">metafeatures</span>(Species ~<span class="st"> </span>., iris, <span class="dt">groups=</span><span class="st">&quot;all&quot;</span>)
+
+## Extract all measures using data frame
+iris.info &lt;-<span class="st"> </span><span class="kw">metafeatures</span>(iris[,<span class="dv">1</span>:<span class="dv">4</span>], iris[,<span class="dv">5</span>], <span class="dt">groups=</span><span class="st">&quot;all&quot;</span>)
+
+## Extract general, statistical and information-theoretic measures
+iris.info &lt;-<span class="st"> </span><span class="kw">metafeatures</span>(Species ~<span class="st"> </span>., iris, 
+                          <span class="dt">groups=</span><span class="kw">c</span>(<span class="st">&quot;general&quot;</span>, <span class="st">&quot;statistical&quot;</span>, <span class="st">&quot;infotheo&quot;</span>))</code></pre></div>
+<p>Several measures return more than one value. To aggregate them, post processed methods can be used. It is possible to compute min, max, mean, median, kurtosis, standard deviation, among others. The default methods are the <code>mean</code> and the <code>sd</code>. For instance:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## Compute all measures using min, median and max 
+iris.info &lt;-<span class="st"> </span><span class="kw">metafeatures</span>(Species ~<span class="st"> </span>., iris, <span class="dt">summary=</span><span class="kw">c</span>(<span class="st">&quot;min&quot;</span>, <span class="st">&quot;median&quot;</span>, <span class="st">&quot;max&quot;</span>))
+                          
+## Compute all measures using quantile
+iris.info &lt;-<span class="st"> </span><span class="kw">metafeatures</span>(Species ~<span class="st"> </span>., iris, <span class="dt">summary=</span><span class="st">&quot;quantile&quot;</span>)</code></pre></div>
+</div>
+<div id="extracting-meta-features-by-group" class="section level1">
+<h1>Extracting meta-features by group</h1>
+<p>To customize the measure extraction, is necessary to use specific methods for each group of measures. For instance, <code>mf.general</code> and <code>mf.statistical</code> compute the general and the statistical measures, respectively. The following examples illustrate these cases:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## Extract two statistical measures
+stat.iris &lt;-<span class="st"> </span><span class="kw">mf.statistical</span>(Species ~<span class="st"> </span>., iris, 
+                            <span class="dt">features=</span><span class="kw">c</span>(<span class="st">&quot;correlation&quot;</span>, <span class="st">&quot;variance&quot;</span>))
+
+## Extract two discriminant measures
+disc.iris &lt;-<span class="st"> </span><span class="kw">mf.discriminant</span>(Species ~<span class="st"> </span>., iris, 
+                             <span class="dt">features=</span><span class="kw">c</span>(<span class="st">&quot;cancor&quot;</span>, <span class="st">&quot;cancor.fract&quot;</span>))
+
+## Extract the histogram for the correlation measure
+hist.iris &lt;-<span class="st"> </span><span class="kw">mf.statistical</span>(Species ~<span class="st"> </span>., iris, 
+                            <span class="dt">features=</span><span class="st">&quot;correlation&quot;</span>, <span class="dt">summary=</span><span class="st">&quot;hist&quot;</span>)</code></pre></div>
+<p>Different from the <code>metafeatures</code> method, these methods receive a parameter called <code>features</code>, to define which features are required, and return a list instead of a numeric vector. In additional, some groups can be customized using additional arguments.</p>
+<p>There are six measure groups which can be either general information about the dataset, statistical information, discriminant analysis measures, descriptors about information theoretical, measures designed to extract characteristics about the DT model based or landmarks which represent the performance of simple algorithms applied to the dataset. The following example show the available groups:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## Show the the available groups
+<span class="kw">ls.metafeatures</span>()</code></pre></div>
+<pre><code>## [1] &quot;discriminant&quot; &quot;general&quot;      &quot;infotheo&quot;     &quot;landmarking&quot; 
+## [5] &quot;model.based&quot;  &quot;statistical&quot;</code></pre>
+<div id="general" class="section level2">
+<h2>General</h2>
+<p>These are the most simple measures for extracting general properties of the datasets. For instance, <code>nattribute</code> and <code>nclasse</code> are the total number of attributes in the dataset and the number of output values (classes) in the dataset, respectively. To list the measures of this group use <code>ls.general()</code>. The following examples illustrate these measures:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## Show the the available general measures
+<span class="kw">ls.general</span>()</code></pre></div>
+<pre><code>##  [1] &quot;defective.instances&quot; &quot;dimensionality&quot;      &quot;majority.class&quot;     
+##  [4] &quot;missing.values&quot;      &quot;nattribute&quot;          &quot;nbinary&quot;            
+##  [7] &quot;nclasse&quot;             &quot;ninstance&quot;           &quot;nnumeric&quot;           
+## [10] &quot;nsymbolic&quot;           &quot;pbinary&quot;             &quot;pnumeric&quot;           
+## [13] &quot;psymbolic&quot;           &quot;sdclass&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## Extract all general measures
+general.iris &lt;-<span class="st"> </span><span class="kw">mf.general</span>(Species ~<span class="st"> </span>., iris, <span class="dt">features=</span><span class="st">&quot;all&quot;</span>)
+
+## Extract two general measures
+<span class="kw">mf.general</span>(Species ~<span class="st"> </span>., iris, <span class="dt">features=</span><span class="kw">c</span>(<span class="st">&quot;nattribute&quot;</span>, <span class="st">&quot;nclasse&quot;</span>))</code></pre></div>
+<pre><code>## $nattribute
+## [1] 4
+## 
+## $nclasse
+## [1] 3</code></pre>
+<p>The general measures return a list named by the requested measures. The <code>post.processing</code> methods are not applied in these measures since they return simple values.</p>
+</div>
+<div id="statistical" class="section level2">
+<h2>Statistical</h2>
+<p>Statistical meta-features are the standard statistical measures to describe the numerical properties of a distribution of data. As it requires only numerical attributes, the categorical data are transformed to numerical. For instance, <code>correlation</code> and <code>skewness</code> are the absolute correlation between each pair of attributes and the skewness of the numeric attributes in the dataset, respectively. To list the measures of this group use <code>ls.statistical()</code>. The following examples illustrate these measures:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## Show the the available statistical measures
+<span class="kw">ls.statistical</span>()</code></pre></div>
+<pre><code>##  [1] &quot;correlation&quot;         &quot;covariance&quot;          &quot;discreteness.degree&quot;
+##  [4] &quot;geometric.mean&quot;      &quot;harmonic.mean&quot;       &quot;iqr&quot;                
+##  [7] &quot;kurtosis&quot;            &quot;mad&quot;                 &quot;normality&quot;          
+## [10] &quot;outliers&quot;            &quot;skewness&quot;            &quot;standard.deviation&quot; 
+## [13] &quot;trim.mean&quot;           &quot;variance&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## Extract all statistical measures
+stat.iris &lt;-<span class="st"> </span><span class="kw">mf.statistical</span>(Species ~<span class="st"> </span>., iris, <span class="dt">features=</span><span class="st">&quot;all&quot;</span>)
+
+## Extract two statistical measures
+<span class="kw">mf.statistical</span>(Species ~<span class="st"> </span>., iris, <span class="dt">features=</span><span class="kw">c</span>(<span class="st">&quot;correlation&quot;</span>, <span class="st">&quot;skewness&quot;</span>))</code></pre></div>
+<pre><code>## $correlation
+##      mean        sd 
+## 0.4850530 0.2093902 
+## 
+## $skewness
+##      mean        sd 
+## 0.2971599 0.3332861</code></pre>
+<p>The statistical group requires an additional parameter called <code>by.class</code>. The default is <code>by.class=TRUE</code> which means that the meta-features are computed over the instances separated by class. Otherwise, the measure is applied using the whole dataset. The following example shows how to compute the correlation between the attributes for the whole dataset:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## Extract correlation using all instances together
+<span class="kw">mf.statistical</span>(Species ~<span class="st"> </span>., iris, <span class="dt">features=</span><span class="st">&quot;correlation&quot;</span>, <span class="dt">by.class=</span><span class="ot">FALSE</span>)</code></pre></div>
+<pre><code>## $correlation
+##      mean        sd 
+## 0.5941160 0.3218359</code></pre>
+<p>Note that the values obtained are different since the correlation between the attributes were computed over all the instances while in the previous, the correlation were computed using the instances of the same class.</p>
+<p>The statistical measures return a list named by the requested measures. The <code>post.processing</code> methods are applied in these measures since they return multiple values. To define which them should be applied use the <code>summary</code> parameter, as detailed in the <code>post.processing</code> method.</p>
+</div>
+<div id="discriminant" class="section level2">
+<h2>Discriminant</h2>
+<p>Discriminant meta-features are computed using the discriminant analysis. As it requires only numerical attributes, like statistical group, the categorical data are transformed to numerical. For instance, <code>cancor</code> and <code>discfct</code> are the first canonical discriminant correlations in the dataset and the number of discriminant functions normalized by the number of classes, respectively. To list the measures of this group use <code>ls.discriminant()</code>. The following examples illustrate these measures:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## Show the the available general measures
+<span class="kw">ls.discriminant</span>()</code></pre></div>
+<pre><code>## [1] &quot;cancor&quot;            &quot;cancor.fract&quot;      &quot;center.of.gravity&quot;
+## [4] &quot;discfct&quot;           &quot;eigen.fract&quot;       &quot;max.eigenvalue&quot;   
+## [7] &quot;min.eighenvalue&quot;   &quot;sdratio&quot;           &quot;wlambda&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## Extract all discriminant measures
+disc.iris &lt;-<span class="st"> </span><span class="kw">mf.discriminant</span>(Species ~<span class="st"> </span>., iris, <span class="dt">features=</span><span class="st">&quot;all&quot;</span>)
+
+## Extract two discriminant measures
+<span class="kw">mf.discriminant</span>(Species ~<span class="st"> </span>., iris, <span class="dt">features=</span><span class="kw">c</span>(<span class="st">&quot;cancor&quot;</span>, <span class="st">&quot;discfct&quot;</span>))</code></pre></div>
+<pre><code>## $cancor
+## [1] 0.9848209
+## 
+## $discfct
+## [1] 0.6666667</code></pre>
+<p>The discriminant measures return a list named by the requested measures. Like general group, the <code>post.processing</code> methods are not applied in these measures since they return simple values.</p>
+</div>
+<div id="information-theoretical" class="section level2">
+<h2>Information Theoretical</h2>
+<p>Information Theoretical meta-features are particularly appropriate to describe discrete (categorical) attributes, but they also fit continuous ones using a discretization process. These measures are based on information theory. For instance, <code>class.entropy</code> and <code>mutual.information</code> are the normalized entropy of the class and the common information shared between each attribute and the class in the dataset, respectively. To list the measures of this group use <code>ls.infotheo()</code>. The following examples illustrate these measures:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## Show the the available infotheo measures
+<span class="kw">ls.infotheo</span>()</code></pre></div>
+<pre><code>## [1] &quot;attributes.concentration&quot; &quot;attribute.entropy&quot;       
+## [3] &quot;class.concentration&quot;      &quot;class.entropy&quot;           
+## [5] &quot;equivalent.attributes&quot;    &quot;joint.entropy&quot;           
+## [7] &quot;mutual.information&quot;       &quot;noise.signal&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## Extract all infotheo measures
+inf.iris &lt;-<span class="st"> </span><span class="kw">mf.infotheo</span>(Species ~<span class="st"> </span>., iris, <span class="dt">features=</span><span class="st">&quot;all&quot;</span>)
+
+## Extract two infotheo measures
+<span class="kw">mf.infotheo</span>(Species ~<span class="st"> </span>., iris, 
+            <span class="dt">features=</span><span class="kw">c</span>(<span class="st">&quot;class.entropy&quot;</span>, <span class="st">&quot;mutual.information&quot;</span>))</code></pre></div>
+<pre><code>## $class.entropy
+## [1] 1
+## 
+## $mutual.information
+##      mean        sd 
+## 0.8439342 0.4222026</code></pre>
+<p>The infotheo measures return a list named by the requested measures. The <code>post.processing</code> methods are applied in some measures since they return multiple values. To define which them should be applied use the <code>summary</code> parameter, as detailed in the section <strong>Post Processing Methods</strong>.</p>
+</div>
+<div id="model-based" class="section level2">
+<h2>Model based</h2>
+<p>These measures describe characteristics of the investigated models. These meta-features can include, for example, the description of the DT induced for a dataset, like its number of leaves (<code>nleave</code>) and the maximum depth (<code>max.depth</code>) of the tree. The following examples illustrate these measures:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## Show the the available model.based measures
+<span class="kw">ls.model.based</span>()</code></pre></div>
+<pre><code>##  [1] &quot;average.leaf.corrobation&quot; &quot;branch.length&quot;           
+##  [3] &quot;depth&quot;                    &quot;homogeneity&quot;             
+##  [5] &quot;max.depth&quot;                &quot;nleave&quot;                  
+##  [7] &quot;nnode&quot;                    &quot;nodes.per.attribute&quot;     
+##  [9] &quot;nodes.per.instance&quot;       &quot;nodes.per.level&quot;         
+## [11] &quot;repeated.nodes&quot;           &quot;shape&quot;                   
+## [13] &quot;variable.importance&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## Extract all model.based measures
+land.iris &lt;-<span class="st"> </span><span class="kw">mf.model.based</span>(Species ~<span class="st"> </span>., iris, <span class="dt">features=</span><span class="st">&quot;all&quot;</span>)
+
+## Extract three model.based measures
+<span class="kw">mf.model.based</span>(Species ~<span class="st"> </span>., iris, <span class="dt">features=</span><span class="kw">c</span>(<span class="st">&quot;nleave&quot;</span>, <span class="st">&quot;max.depth&quot;</span>))</code></pre></div>
+<pre><code>## $nleave
+## [1] 3
+## 
+## $max.depth
+## [1] 2</code></pre>
+<p>The DT model based measures return a list named by the requested measures. The <code>post.processing</code> methods are applied in these measures since they return multiple values. To define which them should be applied use the <code>summary</code> parameter, as detailed in the <code>post.processing</code> method.</p>
+</div>
+<div id="landmarking" class="section level2">
+<h2>Landmarking</h2>
+<p>Landmarking measures are simple and fast algorithms, from which performance characteristics can be extracted. These measures include the accuracy of simple and efficient learning algorithms like Naive Bayes (<code>naive.bayes</code>) and 1-Nearest Neighbor (<code>nearest.neighbor</code>). The following examples illustrate these measures:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## Show the the available landmarking measures
+<span class="kw">ls.landmarking</span>()</code></pre></div>
+<pre><code>## [1] &quot;decision.stumps&quot;        &quot;elite.nearest.neighbor&quot;
+## [3] &quot;linear.discriminant&quot;    &quot;naive.bayes&quot;           
+## [5] &quot;nearest.neighbor&quot;       &quot;worst.node&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## Extract all landmarking measures
+land.iris &lt;-<span class="st"> </span><span class="kw">mf.landmarking</span>(Species ~<span class="st"> </span>., iris, <span class="dt">features=</span><span class="st">&quot;all&quot;</span>)
+
+## Extract two landmarking measures
+<span class="kw">mf.landmarking</span>(Species ~<span class="st"> </span>., iris, <span class="dt">features=</span><span class="kw">c</span>(<span class="st">&quot;naive.bayes&quot;</span>, <span class="st">&quot;nearest.neighbor&quot;</span>))</code></pre></div>
+<pre><code>## $naive.bayes
+##       mean         sd 
+## 0.94222222 0.07161697 
+## 
+## $nearest.neighbor
+##       mean         sd 
+## 0.97333333 0.04143036</code></pre>
+<p>The accuracy extraction of these measures without a cross validation step can cause model overfitting in the data. Therefore the <code>mf.landmarking</code> function has the parameter <code>folds</code> to define the number of <code>k</code>-fold cross-validation. The following example show how to set this value:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## Extract one landmarking measures with folds=2
+<span class="kw">mf.landmarking</span>(Species ~<span class="st"> </span>., iris, <span class="dt">features=</span><span class="st">&quot;naive.bayes&quot;</span>, <span class="dt">folds=</span><span class="dv">2</span>)</code></pre></div>
+<pre><code>## $naive.bayes
+##       mean         sd 
+## 0.94444444 0.05018484</code></pre>
+<p>There are some measures interested to evaluate the linear separability (<code>linear.discriminant</code>) and the attribute information (<code>decision.stumps</code>). For these measures, multi-class problems need to be decomposed in binary classification problems. This package implemented two decomposition strategies: <code>one.vs.all</code> and <code>one.vs.one</code>. The following code show how to use the decomposition strategies:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## Extract one landmarking measures using one.vs.all strategy
+<span class="kw">mf.landmarking</span>(Species ~<span class="st"> </span>., iris, <span class="dt">features=</span><span class="st">&quot;linear.discriminant&quot;</span>, 
+               <span class="dt">map=</span><span class="st">&quot;one.vs.all&quot;</span>)</code></pre></div>
+<pre><code>## $linear.discriminant
+##      mean        sd 
+## 0.8888889 0.1290500</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## Extract one landmarking measures using one.vs.one strategy
+<span class="kw">mf.landmarking</span>(Species ~<span class="st"> </span>., iris, <span class="dt">features=</span><span class="st">&quot;linear.discriminant&quot;</span>, 
+               <span class="dt">map=</span><span class="st">&quot;one.vs.one&quot;</span>)</code></pre></div>
+<pre><code>## $linear.discriminant
+##      mean        sd 
+## 0.9833333 0.0461133</code></pre>
+<p>The landmarking measures return a list named by the requested measures. The <code>post.processing</code> methods are applied in these measures since they return multiple values. To define which them should be applied use the <code>summary</code> parameter, as detailed in the <code>post.processing</code> method.</p>
+</div>
+</div>
+<div id="post-processing-methods" class="section level1">
+<h1>Post Processing Methods</h1>
+<p>Several meta-features generate multiple values and <code>mean</code> and <code>sd</code> are the standard method to summary these values. In order to increase the flexibility, the <code>mfe</code> package implemented the post processing methods to deal with multiple measures values. This method is able to deal with descriptive statistic (resulting in a single value) or a distribution (resulting in multiple values).</p>
+<p>The post processing methods are setted using the parameter <code>summary</code>. It is possible to compute min, max, mean, median, kurtosis, standard deviation, among others. Any R method, can be used, as illustrated in the following examples:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## Apply several statistical measures as post processing
+<span class="kw">mf.statistical</span>(Species ~<span class="st"> </span>., iris, <span class="st">&quot;correlation&quot;</span>, 
+               <span class="dt">summary=</span><span class="kw">c</span>(<span class="st">&quot;kurtosis&quot;</span>, <span class="st">&quot;max&quot;</span>, <span class="st">&quot;mean&quot;</span>, <span class="st">&quot;median&quot;</span>, <span class="st">&quot;min&quot;</span>, <span class="st">&quot;sd&quot;</span>, 
+                         <span class="st">&quot;skewness&quot;</span>, <span class="st">&quot;var&quot;</span>))</code></pre></div>
+<pre><code>## $correlation
+##    kurtosis         max        mean      median         min          sd 
+## -1.27281295  0.86422473  0.48505297  0.49156927  0.17769997  0.20939015 
+##    skewness         var 
+##  0.26480355  0.04384424</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## Apply quantile as post processing method
+<span class="kw">mf.statistical</span>(Species ~<span class="st"> </span>., iris, <span class="st">&quot;correlation&quot;</span>, <span class="dt">summary=</span><span class="st">&quot;quantile&quot;</span>)</code></pre></div>
+<pre><code>## $correlation
+##   quantile.0%  quantile.25%  quantile.50%  quantile.75% quantile.100% 
+##     0.1777000     0.2811077     0.4915693     0.6639987     0.8642247</code></pre>
+<p>Beyond these R default methods, two additional post processing methods are available in the <code>mfe</code> package: <code>hist</code> and <code>non.aggregated</code>. The first computes a histogram of the values and returns the frequencies of in each bins. The extra parameters <code>bins</code> can be used to define the number of values to be returned. The parameters <code>min</code> and <code>max</code> are used to define the range of the data. The second is a way to obtain all values from the measure. The following code illustrate examples of the use of these post processing methods:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## Apply histogram as post processing method
+<span class="kw">mf.statistical</span>(Species ~<span class="st"> </span>., iris, <span class="st">&quot;correlation&quot;</span>, <span class="dt">summary=</span><span class="st">&quot;hist&quot;</span>)</code></pre></div>
+<pre><code>## $correlation
+##      hist1      hist2      hist3      hist4      hist5      hist6 
+## 0.11111111 0.16666667 0.11111111 0.05555556 0.05555556 0.22222222 
+##      hist7      hist8      hist9     hist10 
+## 0.00000000 0.05555556 0.16666667 0.05555556</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## Apply histogram as post processing method and customize it
+<span class="kw">mf.statistical</span>(Species ~<span class="st"> </span>., iris, <span class="st">&quot;correlation&quot;</span>, 
+               <span class="dt">summary=</span><span class="st">&quot;hist&quot;</span>, <span class="dt">bins=</span><span class="dv">5</span>, <span class="dt">min=</span><span class="dv">0</span>, <span class="dt">max=</span><span class="dv">1</span>)</code></pre></div>
+<pre><code>## $correlation
+##      hist1      hist2      hist3      hist4      hist5 
+## 0.05555556 0.33333333 0.33333333 0.22222222 0.05555556</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## Extract all correlation values
+<span class="kw">mf.statistical</span>(Species ~<span class="st"> </span>., iris, <span class="st">&quot;correlation&quot;</span>, <span class="dt">summary=</span><span class="st">&quot;non.aggregated&quot;</span>, 
+               <span class="dt">by.class=</span><span class="ot">FALSE</span>)</code></pre></div>
+<pre><code>## $correlation
+##  non.aggregated1  non.aggregated2  non.aggregated3  non.aggregated4 
+##        0.1175698        0.8717538        0.4284401        0.8179411 
+##  non.aggregated5  non.aggregated6  non.aggregated7  non.aggregated8 
+##        0.3661259        0.9628654        0.1175698        0.8717538 
+##  non.aggregated9 non.aggregated10 non.aggregated11 non.aggregated12 
+##        0.4284401        0.8179411        0.3661259        0.9628654</code></pre>
+<p>It is also possible define an user’s post processing method, like this:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## Compute the absolute difference between the mean and the median 
+my.method &lt;-<span class="st"> </span>function(x, ...) <span class="kw">abs</span>(<span class="kw">mean</span>(x) -<span class="st"> </span><span class="kw">median</span>(x))
+
+## Using the user defined post processing method
+<span class="kw">mf.statistical</span>(Species ~<span class="st"> </span>., iris, <span class="st">&quot;correlation&quot;</span>, <span class="dt">summary=</span><span class="st">&quot;my.method&quot;</span>)</code></pre></div>
+<pre><code>## $correlation
+##   my.method 
+## 0.006516292</code></pre>
+</div>
+<div id="summary" class="section level1">
+<h1>Summary</h1>
+<p>In this paper the <code>mfe</code> package, aimed to extract meta-features from dataset, has been introduced. The functions supplied by this package allow both their use in MtL experiments as well as perform data analysis using characterization measures able to describe datasets. Currently, six groups of meta-features can be extracted for any classification dataset. These groups and features represent the standard and the state of the art characterization measures.</p>
+<p>The <code>mfe</code> package was designed to be easily customized and extensible. The development of the <code>mfe</code> package will continue in the near future by including new meta-features, group of measures supporting regression problems and MtL evaluation measures.</p>
+</div>
+
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
