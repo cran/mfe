@@ -7,7 +7,9 @@
 #' @param measure A list with the meta-features values.
 #' @param summary The functions to post processing the data. See the details
 #'   to more information. Default: \code{c("mean", "sd")}
-#' @param ... Extra values used to the functions.
+#' @param multiple A logical value defining if the measure should return
+#'   multiple values. (Default: \code{TRUE})
+#' @param ... Extra values used to the functions of summarization.
 #' @details
 #'  The post processing functions are used to summarize the meta-features.
 #'  They are organized into three groups: non-aggregated, descriptive
@@ -18,13 +20,13 @@
 #'  type and functions can be combined. Usually, these function are used to
 #'  summarize a set of values for each meta-features. For instance, a measure
 #'  computed for each attribute can be summarized using the \code{"mean"} and/or
-#'  \code{"sd"}. Mandatorily, a single value always use the
+#'  \code{"sd"}. Necessarily, a single value always use the
 #'  \code{"non.aggregated"} function.
 #'
 #'  In addition to the native functions available in R, the following functions
 #'  can be used:
 #'  \describe{
-#'    \item{"hist"}{Computes a histogram of the given data value. The extra
+#'    \item{"histogram"}{Computes a histogram of the given data value. The extra
 #'       parameters '\code{bins}' can be used to define the number of values to
 #'       be returned. The parameters '\code{max}' and '\code{min}' are used to
 #'       define the range of the data. The default value for these parameters
@@ -34,10 +36,7 @@
 #'    \item{"mean"}{See \code{\link{mean}}}
 #'    \item{"median"}{See \code{\link{median}}}
 #'    \item{"min"}{See \code{\link{min}}}
-#'    \item{"mode"}{Returns the most common value of the distribution. If more
-#'       than one value are the most common return the first. It does not work
-#'       as expected for real numbers.}
-#'    \item{"quantile"}{See \code{\link{quantile}}}
+#'    \item{"quantiles"}{See \code{\link{quantile}}}
 #'    \item{"sd"}{See \code{\link{sd}}}
 #'    \item{"skewness"}{See \code{\link[e1071]{skewness}}}
 #'    \item{"var"}{See \code{\link{var}}}
@@ -48,23 +47,32 @@
 #'  as post-processing summarization function.
 #'
 #' @return A list with the post-processed meta-features
-#' @references
-#' Pinto, F., Soares, C., & Mendes-Moreira, J. (2016). Towards Automatic
-#'   Generation of Metafeatures. In 20th Pacific-Asia Conference (pp. 215-226).
 #'
-#' @export
+#' @references
+#'  Fabio Pinto, Carlos Soares, and Joao Mendes-Moreira. Towards Automatic
+#'  Generation of Metafeatures. In 20th Pacific-Asia Conference on Knowledge 
+#'  Discovery and Data Mining  (PAKDD), pages 215 - 226, 2016.
 #'
 #' @examples
 #' post.processing(runif(15))
 #' post.processing(runif(15), c("min", "max"))
-#' post.processing(runif(15), c("quantile", "skewness"))
-#' post.processing(runif(15), "hist", bins=5, min=0, max=1)
-post.processing <- function(measure, summary=c("mean", "sd"), ...) {
-  if(length(measure) == 1) {
-    return(measure)
+#' post.processing(runif(15), c("quantiles", "skewness"))
+#' post.processing(runif(15), "histogram", bins=5, min=0, max=1)
+#' @export
+post.processing <- function(measure, summary=c("mean", "sd"), multiple=TRUE,
+                            ...) {
+  measure[!is.finite(measure) | is.null(measure) | is.nan(measure)] <- NA
+  if(length(measure) == 0) {
+    measure <- as.numeric(NA)
   }
 
-  #Internal methods to do not override the originals
+  if(!multiple) {
+    if(length(measure) > 1) {
+      warning("More than one value was obtained for a single measure")
+    }
+    return(measure[1])
+  }
+
   skewness <- function(x, na.rm=FALSE, type=3, ...) {
     e1071::skewness(x, na.rm, type)
   }
@@ -73,9 +81,16 @@ post.processing <- function(measure, summary=c("mean", "sd"), ...) {
     e1071::kurtosis(x, na.rm, type)
   }
 
-  mode <- function(x, ...){
-    ux <- unique(x)
-    ux[which.max(tabulate(match(x, ux)))]
+  quantiles <- function(x, type=1, ...) {
+    tryCatch(
+      stats::quantile(x, type=type, ...),
+      error=function(e) stats::quantile(NA, na.rm=TRUE, ...)
+    )
+  }
+
+  iqr <- function(x, na.rm=FALSE, ...) {
+     if (!na.rm & any(is.na(x))) NA
+     else stats::IQR(x, na.rm = na.rm)
   }
 
   res <- sapply(summary, function(s) {
@@ -89,7 +104,9 @@ non.aggregated <- function (x, ...) {
   x
 }
 
-hist <- function(x, bins=10, min=base::min(x), max=base::max(x), ...){
-  breaks <- seq(min, max, length.out=bins+1)
-  graphics::hist(x, breaks=breaks, plot=FALSE)$counts / length(x)
+histogram <- function(x, bins=10, min=base::min(x, na.rm=TRUE),
+                 max=base::max(x, na.rm=TRUE), ...) {
+  breaks <- seq(ifelse(is.finite(min), min, 0),
+                ifelse(is.finite(max), max, bins), length.out=bins + 1)
+  graphics::hist(as.numeric(x), breaks=breaks, plot=FALSE)$counts / length(x)
 }

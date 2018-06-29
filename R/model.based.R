@@ -1,98 +1,100 @@
 #' Decision Tree Model Based Meta-features
 #'
-#' Decision Tree (DT) Model Based meta-features are the measures desined to
-#' extract characteristics like the depth, the shape and size of a DT model
-#' induced from a dataset.
+#' Decision Tree (DT) Model Based meta-features are the measures designed to
+#' extract characteristics of a DT model induced from a dataset.
 #'
 #' @family meta-features
-#' @param x A data.frame contained only the input attributes
+#' @param x A data.frame contained only the input attributes.
 #' @param y A factor response vector with one label for each row/component of x.
 #' @param features A list of features names or \code{"all"} to include all them.
-#' @param summary A list of methods to summarize the results as post-processing
-#'  functions. See \link{post.processing} method to more information. (Default:
+#' @param summary A list of summarization functions or empty for all values. See
+#'  \link{post.processing} method to more information. (Default: 
 #'  \code{c("mean", "sd")})
-#' @param ... Optional arguments to the summary methods.
 #' @param formula A formula to define the class column.
 #' @param data A data.frame dataset contained the input attributes and class.
 #'  The details section describes the valid values for this group.
+#' @param ... Further arguments passed to the summarization functions.
 #' @details
 #'  The following features are allowed for this method:
 #'  \describe{
-#'    \item{"average.leaf.corrobation"}{Represents the.number of examples that
-#'      belong to each leaf in the DT model divided by the number of examples in
-#'      the dataset.}
-#'    \item{"branch.length"}{Represents the.size of each leaf in the DT model.}
-#'    \item{"depth"}{Represents the size of each path in the DT model.}
-#'    \item{"homogeneity"}{Represents the number of leaves divided by the
-#'      strutural shape of the DT model.}
-#'    \item{"max.depth"}{Represents the size of the longest path of the DT
-#'      model.}
-#'    \item{"nleave"}{Represents the number of leaves of the DT model.}
-#'    \item{"nnode"}{Represents the number of nodes in the DT model.}
-#'    \item{"nodes.per.attribute"}{Represents the number of nodes in the DT
-#'      model divided by the number of predictive attributes.}
-#'    \item{"nodes.per.instance"}{Represents the number of leaves in the DT
-#'      model divided by the number of examples in the dataset.}
-#'    \item{"nodes.level"}{Represents the number of nodes per level.}
-#'    \item{"repeated.nodes"}{Represents the number of repeated attributes that
-#'      appear in the DT model.}
-#'    \item{"shape"}{Represents the probability of arrive in each leaf given a
-#'      random walk. We call this as the strutural shape of the DT model.}
-#'    \item{"variable.importance"}{Represents the variable importance calculated
-#'      by Gini index to construct the DT model.}
+#'    \item{"leaves"}{Number of leaves of the DT model.}
+#'    \item{"leavesBranch"}{Size of branches, which consists in the level of all
+#'    leaves of the DT model (multi-valued).}
+#'    \item{"leavesCorrob"}{Leaves corroboration, which is the proportion of
+#'    examples that belong to each leaf of the DT model (multi-valued).}
+#'    \item{"leavesHomo"}{Homogeneity, which is the number of leaves divided by 
+#'    the structural shape of the DT model (multi-valued).}
+#'    \item{"leavesPerClass"}{Leaves per class, which is the proportion of 
+#'    leaves of the DT model associated with each class (multi-valued).}
+#'    \item{"nodes"}{Number of nodes of the DT model.}
+#'    \item{"nodesPerAttr"}{Ratio of the number of nodes of the DT model per the
+#'    number of attributes.}
+#'    \item{"nodesPerInst"}{Ratio of the number of nodes of the DT model per the
+#'    number of instances.}
+#'    \item{"nodesPerLevel"}{Number of nodes of the DT model per level 
+#'    (multi-valued).}
+#'    \item{"nodesRepeated"}{Repeated nodes, which is the number of repeated
+#'    attributes that appear in the DT model (multi-valued).}
+#'    \item{"treeDepth"}{Tree depth, which is the level of all tree nodes and 
+#'    leaves of the DT model (multi-valued).}
+#'    \item{"treeImbalance"}{Tree imbalance (multi-valued).}
+#'    \item{"treeShape"}{Tree shape, which is the probability of arrive in each 
+#'    leaf given a random walk. We call this as the structural shape of the DT 
+#'    model (multi-valued).}
+#'    \item{"varImportance"}{Variable importance. It is calculated using the 
+#'    Gini index to estimate the amount of information used in the DT model 
+#'    (multi-valued).}
 #'  }
-#' @return Each one of these meta-features generate multiple values (by leaves
-#'  and/or nodes) and then it is post processed by the summary methods.
-#'  See the \link{post.processing} method for more details about it.
+#' @return A list named by the requested meta-features.
 #'
 #' @references
-#'  Bensusan, H., Giraud-Carrier, C. G., & Kennedy, C. J. (2000). A Higher-order
-#'  Approach to Meta-learning. In Proceedings of the 10th International
-#'  Conference on Inductive Logic Programming (Vol. 35, pp. 1-10).
+#'  Hilan Bensusan, Christophe Giraud-Carrier, and Claire Kennedy. A 
+#'  higher-order approach to meta-learning. In 10th International Conference 
+#'  Inductive Logic Programming (ILP), pages 33 - 42, 2000.
 #'
-#'  Peng, Y., Flach, P. A., Soares, C., & Brazdil, P. (2002). Improved Dataset
-#'  Characterisation for Meta-learning. In Proceedings of the 5th International
-#'  Conference on Discovery Science (Vol 2534, pp. 141-152)
+#'  Yonghong Peng, Peter A. Flach, Carlos Soares, and Pavel Brazdil. Improved 
+#'  dataset characterization for meta-learning. In 5th International Conference 
+#'  on Discovery Science (DS), pages 141 - 152, 2002.
 #'
 #' @examples
 #' ## Extract all meta-features using formula
-#' mf.model.based(Species ~ ., iris)
-#'
-#' ## Extract all meta-features using data.frame
-#' mf.model.based(iris[1:4], iris[5])
+#' model.based(Species ~ ., iris)
 #'
 #' ## Extract some meta-features
-#' mf.model.based(Species ~ ., iris, features=c("nnode", "nleave", "depth"))
+#' model.based(iris[1:4], iris[5], c("nodes", "leaves", "treeShape"))
 #'
-#' ## Extract all meta-features with different summary methods
-#' mf.model.based(Species ~ ., iris, summary=c("min", "median", "max"))
+#' ## Use another summarization function
+#' model.based(Species ~ ., iris, summary=c("min", "median", "max"))
 #' @export
-mf.model.based <- function(...) {
-  UseMethod("mf.model.based")
+model.based <- function(...) {
+  UseMethod("model.based")
 }
 
-#' @rdname mf.model.based
+#' @rdname model.based
 #' @export
-mf.model.based.default <- function(x, y, features="all",
+model.based.default <- function(x, y, features="all",
                                    summary=c("mean", "sd"), ...) {
   if(!is.data.frame(x)) {
     stop("data argument must be a data.frame")
   }
 
-  y <- as.data.frame(y)
+  if(is.data.frame(y)) {
+    y <- y[, 1]
+  }
+  y <- as.factor(y)
 
-  if(nrow(x) != nrow(y)) {
+  if(nrow(x) != length(y)) {
     stop("x and y must have same number of rows")
   }
+  colnames(x) <- make.names(colnames(x))
 
-  data <- cbind(Class=y, x)
-  formula <- stats::as.formula(paste(colnames(data[1]), "~."))
-  mf.model.based.formula(formula, data, features, summary, ...)
+  data <- cbind(class=y, x)
+  model.based.formula(stats::formula(data), data, features, summary, ...)
 }
 
-#' @rdname mf.model.based
+#' @rdname model.based
 #' @export
-mf.model.based.formula <- function(formula, data, features="all",
+model.based.formula <- function(formula, data, features="all",
                                    summary=c("mean", "sd"), ...) {
   if(!inherits(formula, "formula")) {
     stop("method is only for formula datas")
@@ -104,16 +106,29 @@ mf.model.based.formula <- function(formula, data, features="all",
 
   modFrame <- stats::model.frame(formula, data)
   attr(modFrame,"terms") <- NULL
-
+  
+  if (nlevels(modFrame[,1]) > length(modFrame[,1]) / 10) {
+    stop("y must contain classes values")
+  }
+  
+  if(min(table(modFrame[,1])) < 2) {
+    stop("number of examples in the minority class should be >= 2")
+  }
+  
   if(features[1] == "all") {
     features <- ls.model.based()
   }
   features <- match.arg(features, ls.model.based(), TRUE)
-
-  model <- dt.model(formula, data)
+  
+  if (length(summary) == 0) {
+    summary <- "non.aggregated"
+  }
+  
+  model <- dt(formula, data)
   sapply(features, function(f) {
-    measure <- eval(call(f, model=model, data=data))
-    post.processing(measure, summary)
+    fn <- paste("m", f, sep=".")
+    measure <- eval(call(fn, model=model, data=data))
+    post.processing(measure, summary, f %in% ls.model.based.multiples(), ...)
   }, simplify=FALSE)
 }
 
@@ -125,81 +140,74 @@ mf.model.based.formula <- function(formula, data, features="all",
 #' @examples
 #' ls.model.based()
 ls.model.based <- function() {
-  c("average.leaf.corrobation", "branch.length", "depth", "homogeneity",
-    "max.depth", "nleave", "nnode", "nodes.per.attribute", "nodes.per.instance",
-    "nodes.per.level", "repeated.nodes", "shape", "variable.importance")
+  c("leaves", "leavesBranch", "leavesCorrob", "leavesHomo", "leavesPerClass", 
+    "nodes", "nodesPerAttr", "nodesPerInst", "nodesPerLevel", "nodesRepeated", 
+    "treeDepth", "treeImbalance", "treeShape", "varImportance")
 }
 
-dt.model <- function(formula, data, ...) {
-  rpart::rpart(formula, data, method="class",
-    control=rpart::rpart.control(maxsurrogate=0))
+ls.model.based.multiples <- function() {
+  c("leavesBranch", "leavesCorrob", "leavesHomo", "leavesPerClass", 
+    "nodesPerLevel", "nodesRepeated", "treeDepth", "treeImbalance", 
+    "treeShape", "varImportance")
 }
 
-nnode <- function(model, ...) {
-  sum(model$frame$var != "<leaf>")
-}
-
-nodes.per.attribute <- function(model, data, ...) {
-  nnode(model, ...) / (ncol(data)-1)
-}
-
-nodes.per.instance <- function(model, data, ...) {
-  nnode(model, ...) / nrow(data)
-}
-
-average.leaf.corrobation <- function(model, data, ...) {
-  model$frame$n[model$frame$var == "<leaf>"] / nrow(data)
-}
-
-variable.importance <- function(model, ...) {
-  aux <- attr(model$terms, "term.labels")
-  aux <- stats::setNames(rep(0, length(aux)), aux)
-  aux[names(model$variable.importance)] <- model$variable.importance
-  return(aux)
-}
-
-depth <- function(model, ...) {
-  nodes <- as.numeric(rownames(model$frame))
-  depths <- floor(log2(nodes) + 1e-7)
-  return(depths - min(depths))
-}
-
-max.depth <- function(model, ...) {
-  max(depth(model, ...))
-}
-
-repeated.nodes <- function(model, data, ...) {
-  aux <- attr(model$terms, "term.labels")
-  aux <- stats::setNames(rep(0, length(aux)), aux)
-  tmp <- table(factor(model$frame$var[model$frame$var != "<leaf>"]))
-  aux[names(tmp)] <- tmp
-  return(aux)
-}
-
-shape <- function(model, ...) {
-  aux <- depth(model)[model$frame$var == "<leaf>"]
-  prob <- -(1 / 2 ^ aux) * log2(1 / 2 ^ aux)
-  return(prob)
-}
-
-nleave <- function(model, ...) {
+m.leaves <- function(model, ...) {
   nrow(model$frame[model$frame$var == "<leaf>",])
 }
 
-homogeneity <- function(model, ...) {
-  nleave(model, ...) / shape(model, ...)
+m.leavesBranch <- function(model, ...) {
+  m.treeDepth(model)[model$frame$var == "<leaf>"]
 }
 
-branch.length <- function(model, ...) {
-  depth(model)[model$frame$var == "<leaf>"]
+m.leavesCorrob <- function(model, data, ...) {
+  model$frame$n[model$frame$var == "<leaf>"] / nrow(data)
 }
 
-nodes.per.level <- function(model, ...) {
-  aux <- depth(model)[model$frame$var != "<leaf>"]
-  if(length(aux) <= 1) {
-    return(c(0, 0))
-  }
-  sapply(0:max(aux), function(d) {
-    sum(aux == d)
-  })
+m.leavesHomo <- function(model, ...) {
+  m.leaves(model, ...) / m.treeShape(model, ...)
+}
+
+m.leavesPerClass <- function(model, ...) {
+  as.numeric(table(model$frame[model$frame$var == "<leaf>", "yval"])) / m.leaves(model)
+}
+
+m.nodes <- function(model, ...) {
+  sum(model$frame$var != "<leaf>")
+}
+
+m.nodesPerAttr <- function(model, data, ...) {
+  m.nodes(model, ...) / (ncol(data)-1)
+}
+
+m.nodesPerInst <- function(model, data, ...) {
+  m.nodes(model, ...) / nrow(data)
+}
+
+m.nodesPerLevel <- function(model, ...) {
+  as.numeric(table(factor(m.treeDepth(model)[model$frame$var != "<leaf>"])))
+}
+
+m.nodesRepeated <- function(model, ...) {
+  as.numeric(table(factor(model$frame$var[model$frame$var != "<leaf>"])))
+}
+
+m.treeDepth <- function(model, ...) {
+  nodes <- as.numeric(rownames(model$frame))
+  depths <- floor(log2(nodes) + 1e-7)
+  depths - min(depths)
+}
+
+m.treeImbalance <- function(model, ...) {
+  aux <- 1 / 2 ^ m.treeDepth(model)[model$frame$var == "<leaf>"]
+  aux <- as.numeric(table(aux)) * sort(unique(aux))
+  -(1 / 2 ^ aux) * log2(1 / 2 ^ aux)
+}
+
+m.treeShape <- function(model, ...) {
+  aux <- m.treeDepth(model)[model$frame$var == "<leaf>"]
+  -(1 / 2 ^ aux) * log2(1 / 2 ^ aux)
+}
+
+m.varImportance <- function(model, ...) {
+  round(model$variable.importance / sum(model$variable.importance), 2)
 }

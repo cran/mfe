@@ -4,7 +4,7 @@
 \alias{post.processing}
 \title{Post processing meta-features values}
 \usage{
-post.processing(measure, summary = c("mean", "sd"), ...)
+post.processing(measure, summary = c("mean", "sd"), multiple = TRUE, ...)
 }
 \arguments{
 \item{measure}{A list with the meta-features values.}
@@ -12,7 +12,10 @@ post.processing(measure, summary = c("mean", "sd"), ...)
 \item{summary}{The functions to post processing the data. See the details
 to more information. Default: \code{c("mean", "sd")}}
 
-\item{...}{Extra values used to the functions.}
+\item{multiple}{A logical value defining if the measure should return
+multiple values. (Default: \code{TRUE})}
+
+\item{...}{Extra values used to the functions of summarization.}
 }
 \value{
 A list with the post-processed meta-features
@@ -32,13 +35,13 @@ The post processing functions are used to summarize the meta-features.
  type and functions can be combined. Usually, these function are used to
  summarize a set of values for each meta-features. For instance, a measure
  computed for each attribute can be summarized using the \code{"mean"} and/or
- \code{"sd"}. Mandatorily, a single value always use the
+ \code{"sd"}. Necessarily, a single value always use the
  \code{"non.aggregated"} function.
 
  In addition to the native functions available in R, the following functions
  can be used:
  \describe{
-   \item{"hist"}{Computes a histogram of the given data value. The extra
+   \item{"histogram"}{Computes a histogram of the given data value. The extra
       parameters '\code{bins}' can be used to define the number of values to
       be returned. The parameters '\code{max}' and '\code{min}' are used to
       define the range of the data. The default value for these parameters
@@ -48,10 +51,7 @@ The post processing functions are used to summarize the meta-features.
    \item{"mean"}{See \code{\link{mean}}}
    \item{"median"}{See \code{\link{median}}}
    \item{"min"}{See \code{\link{min}}}
-   \item{"mode"}{Returns the most common value of the distribution. If more
-      than one value are the most common return the first. It does not work
-      as expected for real numbers.}
-   \item{"quantile"}{See \code{\link{quantile}}}
+   \item{"quantiles"}{See \code{\link{quantile}}}
    \item{"sd"}{See \code{\link{sd}}}
    \item{"skewness"}{See \code{\link[e1071]{skewness}}}
    \item{"var"}{See \code{\link{var}}}
@@ -64,11 +64,11 @@ The post processing functions are used to summarize the meta-features.
 \examples{
 post.processing(runif(15))
 post.processing(runif(15), c("min", "max"))
-post.processing(runif(15), c("quantile", "skewness"))
-post.processing(runif(15), "hist", bins=5, min=0, max=1)
+post.processing(runif(15), c("quantiles", "skewness"))
+post.processing(runif(15), "histogram", bins=5, min=0, max=1)
 }
 \references{
-Pinto, F., Soares, C., & Mendes-Moreira, J. (2016). Towards Automatic
-  Generation of Metafeatures. In 20th Pacific-Asia Conference (pp. 215-226).
+Fabio Pinto, Carlos Soares, and Joao Mendes-Moreira. Towards Automatic
+ Generation of Metafeatures. In 20th Pacific-Asia Conference on Knowledge 
+ Discovery and Data Mining  (PAKDD), pages 215 - 226, 2016.
 }
-
