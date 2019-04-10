@@ -86,7 +86,7 @@ model.based.default <- function(x, y, features="all",
   if(nrow(x) != length(y)) {
     stop("x and y must have same number of rows")
   }
-  colnames(x) <- make.names(colnames(x))
+  colnames(x) <- make.names(colnames(x), unique=TRUE)
 
   data <- cbind(class=y, x)
   model.based.formula(stats::formula(data), data, features, summary, ...)
@@ -106,11 +106,7 @@ model.based.formula <- function(formula, data, features="all",
 
   modFrame <- stats::model.frame(formula, data)
   attr(modFrame,"terms") <- NULL
-  
-  if (nlevels(modFrame[,1]) > length(modFrame[,1]) / 10) {
-    stop("y must contain classes values")
-  }
-  
+
   if(min(table(modFrame[,1])) < 2) {
     stop("number of examples in the minority class should be >= 2")
   }
@@ -209,5 +205,5 @@ m.treeShape <- function(model, ...) {
 }
 
 m.varImportance <- function(model, ...) {
-  round(model$variable.importance / sum(model$variable.importance), 2)
+  model$variable.importance / sum(model$variable.importance)
 }

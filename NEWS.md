@@ -1,4 +1,13 @@
-# Version 0.1.1 [current]
+# Version 0.1.2 [current]
+
+### Minor changes
+* Change license
+
+### Bugfixes
+* Support dataset with weird attribute's names
+* Changed the comparison of the `nrNorm` statistical meta-feature
+
+# Version 0.1.1
 
 ### Minor changes
 * Add new measures in all groups
@@ -11,7 +20,7 @@
 * Fix Decision Tree model errors related with minority class with an unique instance
 * Support datasets that have columns named with numbers 
 * Fix harmonic and geometric mean
-
+  
 # First release of **mfe**:
 
 * General meta-features

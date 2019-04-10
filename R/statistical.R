@@ -122,15 +122,11 @@ statistical.default <- function(x, y, features="all",
     stop("x and y must have same number of rows")
   }
 
-  if (nlevels(y) > length(y) / 10) {
-    stop("y must contain classes values")
-  }
-  
   if(features[1] == "all") {
     features <- ls.statistical()
   }
   features <- match.arg(features, ls.statistical(), TRUE)
-  colnames(x) <- make.names(colnames(x))
+  colnames(x) <- make.names(colnames(x), unique=TRUE)
   
   if (length(summary) == 0) {
     summary <- "non.aggregated"
@@ -351,7 +347,7 @@ m.nrNorm <- function(x, ...) {
       error = function(e) e
     )
     p.value
-  })) < 0.1, na.rm = TRUE)
+  })) > 0.1, na.rm = TRUE)
 }
 
 m.nrOutliers <- function(x, ...) {
