@@ -117,7 +117,7 @@ general.formula <- function(formula, data, features="all",
   modFrame <- stats::model.frame(formula, data)
   attr(modFrame, "terms") <- NULL
 
-  general.default(modFrame[, -1], modFrame[, 1], features, summary, ...)
+  general.default(modFrame[-1], modFrame[1], features, summary, ...)
 }
 
 #' List the general meta-features

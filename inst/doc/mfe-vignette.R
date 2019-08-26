@@ -110,6 +110,29 @@ landmarking(Species ~ ., iris, features="naiveBayes", folds=2)
 landmarking(Species ~ ., iris, features="naiveBayes", score="kappa")
 
 ## ------------------------------------------------------------------------
+## Show the the available relative measures
+ls.relative()
+
+## Extract all relative measures
+real.iris <- relative(Species ~ ., iris)
+
+## Extract all relative measures with half of the samples
+relative(Species ~ ., iris, size=0.5)
+
+## Extract two relative measures
+relative(Species ~ ., iris, features=c("naiveBayes", "oneNN"))
+
+## ------------------------------------------------------------------------
+## Show the the available clustering measures
+ls.clustering()
+
+## Extract all clustering measures
+clus.iris <- clustering(Species ~ ., iris)
+
+## Extract two clustering measures
+clustering(Species ~ ., iris, features=c("vdu", "vdb"))
+
+## ------------------------------------------------------------------------
 ## Apply several statistical measures as post processing
 statistical(Species ~ ., iris, "cor", 
                summary=c("kurtosis", "max", "mean", "median", "min", "sd", 

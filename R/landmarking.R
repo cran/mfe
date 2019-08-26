@@ -1,4 +1,4 @@
-#' Landmarking Meta-features
+#' Landmarking and Subsampling Landmarking Meta-features
 #'
 #' Landmarking measures are simple and fast learners, from which performance can
 #' be extracted.
@@ -13,6 +13,8 @@
 #' @param formula A formula to define the class column.
 #' @param data A data.frame dataset contained the input attributes and class.
 #'  The details section describes the valid values for this group.
+#' @param size The percentage of examples subsampled. Values different from 1
+#' generate the subsampling-based landmarking metafeatures. (Default: 1.0)
 #' @param folds The number of k equal size subsamples in k-fold 
 #'  cross-validation.(Default: 10)
 #' @param score The evaluation measure used to score the classification 
@@ -66,6 +68,9 @@
 #'
 #' ## Use 2 folds and balanced accuracy
 #' landmarking(Species ~ ., iris, folds=2, score="balanced.accuracy")
+#'
+#' ## Extract the subsapling landmarking
+#' landmarking(Species ~ ., iris, size=0.7)
 #' @export
 landmarking <- function(...) {
   UseMethod("landmarking")
@@ -74,7 +79,7 @@ landmarking <- function(...) {
 #' @rdname landmarking
 #' @export
 landmarking.default <- function(x, y, features="all",
-                                   summary=c("mean", "sd"), folds=10,
+                                   summary=c("mean", "sd"), size=1, folds=10,
                                    score="accuracy", ...) {
   if(!is.data.frame(x)) {
     stop("data argument must be a data.frame")
@@ -92,7 +97,15 @@ landmarking.default <- function(x, y, features="all",
   if(nrow(x) != length(y)) {
     stop("x and y must have same number of rows")
   }
-  
+
+  if(size < 0.5 | size > 1) {
+    stop("The range size is ]0.5,1]")
+  }
+
+  idx <- sample(nrow(x), size*nrow(x), replace=FALSE)
+  y <- factor(y[idx])
+  x <- x[idx,]
+
   if(features[1] == "all") {
     features <- ls.landmarking()
   }
@@ -118,7 +131,7 @@ landmarking.default <- function(x, y, features="all",
 #' @rdname landmarking
 #' @export
 landmarking.formula <- function(formula, data, features="all",
-                                   summary=c("mean", "sd"), folds=10,
+                                   summary=c("mean", "sd"), size=1, folds=10,
                                    score="accuracy", ...) {
   if(!inherits(formula, "formula")) {
     stop("method is only for formula datas")
@@ -131,8 +144,8 @@ landmarking.formula <- function(formula, data, features="all",
   modFrame <- stats::model.frame(formula, data)
   attr(modFrame, "terms") <- NULL
 
-  landmarking.default(modFrame[, -1], modFrame[, 1], features, summary,
-                         folds, score, ...)
+  landmarking.default(modFrame[-1], modFrame[1], features, summary, size, 
+    folds, score, ...)
 }
 
 #' List the Landmarking meta-features
@@ -152,13 +165,27 @@ ls.landmarking.multiples <- function() {
 }
 
 m.bestNode <- function(x, y, test, ...) {
-  model <- ds(x, y, colnames(x), test)
+  model <- dt(x[-test,], y[-test], maxdepth=1)
+  stats::predict(model, x[test,], type="class")
+}
+
+m.randomNode  <- function(x, y, test, ...) {
+  attr <- sample(colnames(x), 1)
+  model <- dt(x[-test, attr, drop=FALSE], y[-test], maxdepth=1)
+  stats::predict(model, x[test,], type="class")
+}
+
+m.worstNode <- function(x, y, test, ...) {
+  model <- dt(x[-test,], y[-test])
+  attr <- names(model$variable.importance)
+  model <- dt(x[-test, utils::tail(attr,1), drop=FALSE], y[-test], maxdepth=1)
   stats::predict(model, x[test,], type="class")
 }
 
 m.eliteNN <- function(x, y, test, ...) {
-  imp <- names(importance(x, y, test))
-  m.oneNN(x[, imp, drop=FALSE], y, test)
+  model <- dt(x[-test,], y[-test], maxdepth=1)
+  imp <- names(model$variable.importance)
+  m.oneNN(x[imp], y, test)
 }
 
 m.linearDiscr <- function(x, y, test, ...) {
@@ -184,14 +211,4 @@ m.oneNN <- function(x, y, test, k=1, ...) {
   })
   
   return(prediction)
-}
-
-m.randomNode  <- function(x, y, test, ...) {
-  model <- ds(x, y, sample(colnames(x), 1), test)
-  stats::predict(model, x[test,], type="class")
-}
-
-m.worstNode <- function(x, y, test, ...) {
-  model <- ds(x, y, utils::tail(names(importance(x, y, test)), 1), test)
-  stats::predict(model, x[test,], type="class")
 }

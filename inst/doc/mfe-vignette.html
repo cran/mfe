@@ -12,7 +12,7 @@
 
 <meta name="author" content="Adriano Rivolli, Luis P. F. Garcia and Andre C. P. L. F. de Carvalho" />
 
-<meta name="date" content="2019-04-09" />
+<meta name="date" content="2019-08-26" />
 
 <title>mfe: Meta-Feature Extractor</title>
 
@@ -303,7 +303,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 
 <h1 class="title toc-ignore">mfe: Meta-Feature Extractor</h1>
 <h4 class="author">Adriano Rivolli, Luis P. F. Garcia and Andre C. P. L. F. de Carvalho</h4>
-<h4 class="date">2019-04-09</h4>
+<h4 class="date">2019-08-26</h4>
 
 
 
@@ -360,7 +360,8 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <p>There are five measure groups which can be either general information about the dataset, statistical information, descriptors about information theoretical, measures designed to extract characteristics about the DT model or landmarks which represent the performance of simple algorithms applied to the dataset. The following example show the available groups:</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="co">## Show the the available groups</span></a>
 <a class="sourceLine" id="cb4-2" data-line-number="2"><span class="kw">ls.metafeatures</span>()</a></code></pre></div>
-<pre><code>## [1] &quot;general&quot;     &quot;statistical&quot; &quot;infotheo&quot;    &quot;model.based&quot; &quot;landmarking&quot;</code></pre>
+<pre><code>## [1] &quot;general&quot;     &quot;statistical&quot; &quot;infotheo&quot;    &quot;model.based&quot; &quot;landmarking&quot;
+## [6] &quot;relative&quot;    &quot;clustering&quot;</code></pre>
 <div id="general" class="section level2">
 <h2>General</h2>
 <p>These are the most simple measures for extracting general properties of the datasets. For instance, <code>nrAttr</code> and <code>nrClass</code> are the total number of attributes in the dataset and the number of output values (classes) in the dataset, respectively. To list the measures of this group use <code>ls.general()</code>. The following examples illustrate these measures:</p>
@@ -588,7 +589,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 </div>
 <div id="landmarking" class="section level2">
 <h2>Landmarking</h2>
-<p>Landmarking measures are simple and fast algorithms, from which performance characteristics can be extracted. These measures include the performance of simple and efficient learning algorithms like Naive Bayes (<code>nb</code>) and 1-Nearest Neighbor (<code>nn</code>). The following examples illustrate these measures:</p>
+<p>Landmarking measures are simple and fast algorithms, from which performance characteristics can be extracted. These measures include the performance of simple and efficient learning algorithms like Naive Bayes (<code>naiveBayes</code>) and 1-Nearest Neighbor (<code>oneNN</code>). The following examples illustrate these measures:</p>
 <div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb30-1" data-line-number="1"><span class="co">## Show the the available landmarking measures</span></a>
 <a class="sourceLine" id="cb30-2" data-line-number="2"><span class="kw">ls.landmarking</span>()</a></code></pre></div>
 <pre><code>## [1] &quot;bestNode&quot;    &quot;eliteNN&quot;     &quot;linearDiscr&quot; &quot;naiveBayes&quot;  &quot;oneNN&quot;      
@@ -600,53 +601,119 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <a class="sourceLine" id="cb32-5" data-line-number="5"><span class="kw">landmarking</span>(Species <span class="op">~</span><span class="st"> </span>., iris, <span class="dt">features=</span><span class="kw">c</span>(<span class="st">&quot;naiveBayes&quot;</span>, <span class="st">&quot;oneNN&quot;</span>))</a></code></pre></div>
 <pre><code>## $naiveBayes
 ##       mean         sd 
-## 0.95333333 0.03220306 
+## 0.96000000 0.04661373 
 ## 
 ## $oneNN
 ##       mean         sd 
-## 0.94000000 0.04919099</code></pre>
+## 0.95333333 0.05488484</code></pre>
 <p>The performance extraction of these measures without a cross validation step can cause model overfitting in the data. Therefore the <code>landmarking</code> function has the parameter <code>folds</code> to define the number of <code>k</code>-fold cross-validation and the parameter <code>score</code> to select the performance measure. The following example show how to set this value:</p>
 <div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb34-1" data-line-number="1"><span class="co">## Extract one landmarking measures with folds=2</span></a>
 <a class="sourceLine" id="cb34-2" data-line-number="2"><span class="kw">landmarking</span>(Species <span class="op">~</span><span class="st"> </span>., iris, <span class="dt">features=</span><span class="st">&quot;naiveBayes&quot;</span>, <span class="dt">folds=</span><span class="dv">2</span>)</a></code></pre></div>
 <pre><code>## $naiveBayes
 ##       mean         sd 
-## 0.95333333 0.00942809</code></pre>
+## 0.95333333 0.02828427</code></pre>
 <div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb36-1" data-line-number="1"><span class="co">## Extract one landmarking measures with folds=2</span></a>
 <a class="sourceLine" id="cb36-2" data-line-number="2"><span class="kw">landmarking</span>(Species <span class="op">~</span><span class="st"> </span>., iris, <span class="dt">features=</span><span class="st">&quot;naiveBayes&quot;</span>, <span class="dt">score=</span><span class="st">&quot;kappa&quot;</span>)</a></code></pre></div>
 <pre><code>## $naiveBayes
 ##       mean         sd 
-## 0.93000000 0.04830459</code></pre>
+## 0.93729051 0.07213352</code></pre>
 <p>The landmarking measures return a list named by the requested measures. The <code>post.processing</code> methods are applied in these measures since they return multiple values. To define which them should be applied use the <code>summary</code> parameter, as detailed in the <code>post.processing</code> method.</p>
+</div>
+<div id="relative" class="section level2">
+<h2>Relative</h2>
+<p>The relative group is the landmarking with sampling and ranking strategies. The sampling strategy decreases the computational cost of the landmarking by selecting a subsample of the original examples. The ranking strategy capture relative information between the performance of the algorithms. The following examples illustrate these measures:</p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb38-1" data-line-number="1"><span class="co">## Show the the available relative measures</span></a>
+<a class="sourceLine" id="cb38-2" data-line-number="2"><span class="kw">ls.relative</span>()</a></code></pre></div>
+<pre><code>## [1] &quot;bestNode&quot;    &quot;eliteNN&quot;     &quot;linearDiscr&quot; &quot;naiveBayes&quot;  &quot;oneNN&quot;      
+## [6] &quot;randomNode&quot;  &quot;worstNode&quot;</code></pre>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb40-1" data-line-number="1"><span class="co">## Extract all relative measures</span></a>
+<a class="sourceLine" id="cb40-2" data-line-number="2">real.iris &lt;-<span class="st"> </span><span class="kw">relative</span>(Species <span class="op">~</span><span class="st"> </span>., iris)</a>
+<a class="sourceLine" id="cb40-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb40-4" data-line-number="4"><span class="co">## Extract all relative measures with half of the samples</span></a>
+<a class="sourceLine" id="cb40-5" data-line-number="5"><span class="kw">relative</span>(Species <span class="op">~</span><span class="st"> </span>., iris, <span class="dt">size=</span><span class="fl">0.5</span>)</a></code></pre></div>
+<pre><code>## $bestNode
+##          mean sd
+## bestNode    2  6
+## 
+## $eliteNN
+##         mean  sd
+## eliteNN  4.5 3.5
+## 
+## $linearDiscr
+##             mean sd
+## linearDiscr    6  2
+## 
+## $naiveBayes
+##            mean sd
+## naiveBayes    7  1
+## 
+## $oneNN
+##       mean  sd
+## oneNN  4.5 3.5
+## 
+## $randomNode
+##            mean sd
+## randomNode    3  5
+## 
+## $worstNode
+##           mean sd
+## worstNode    1  7</code></pre>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb42-1" data-line-number="1"><span class="co">## Extract two relative measures</span></a>
+<a class="sourceLine" id="cb42-2" data-line-number="2"><span class="kw">relative</span>(Species <span class="op">~</span><span class="st"> </span>., iris, <span class="dt">features=</span><span class="kw">c</span>(<span class="st">&quot;naiveBayes&quot;</span>, <span class="st">&quot;oneNN&quot;</span>))</a></code></pre></div>
+<pre><code>## $naiveBayes
+##            mean sd
+## naiveBayes    2  1
+## 
+## $oneNN
+##       mean sd
+## oneNN    1  2</code></pre>
+</div>
+<div id="clustering" class="section level2">
+<h2>Clustering</h2>
+<p>Clustering measures extract information about dataset based on external validation indexes. The main ideia is measure the complexity of the dataset using indexes able to check information about the predictive attributes and the label. The following examples illustrate these measures:</p>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb44-1" data-line-number="1"><span class="co">## Show the the available clustering measures</span></a>
+<a class="sourceLine" id="cb44-2" data-line-number="2"><span class="kw">ls.clustering</span>()</a></code></pre></div>
+<pre><code>## [1] &quot;vdu&quot; &quot;vdb&quot; &quot;int&quot; &quot;sil&quot; &quot;pb&quot;  &quot;ch&quot;  &quot;nre&quot; &quot;sc&quot;</code></pre>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb46-1" data-line-number="1"><span class="co">## Extract all clustering measures</span></a>
+<a class="sourceLine" id="cb46-2" data-line-number="2">clus.iris &lt;-<span class="st"> </span><span class="kw">clustering</span>(Species <span class="op">~</span><span class="st"> </span>., iris)</a>
+<a class="sourceLine" id="cb46-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb46-4" data-line-number="4"><span class="co">## Extract two clustering measures</span></a>
+<a class="sourceLine" id="cb46-5" data-line-number="5"><span class="kw">clustering</span>(Species <span class="op">~</span><span class="st"> </span>., iris, <span class="dt">features=</span><span class="kw">c</span>(<span class="st">&quot;vdu&quot;</span>, <span class="st">&quot;vdb&quot;</span>))</a></code></pre></div>
+<pre><code>## $vdu
+## [1] 0.05848053
+## 
+## $vdb
+## [1] 0.7513707</code></pre>
 </div>
 </div>
 <div id="post-processing-methods" class="section level1">
 <h1>Post Processing Methods</h1>
 <p>Several meta-features generate multiple values and <code>mean</code> and <code>sd</code> are the standard method to summary these values. In order to increase the flexibility, the <code>mfe</code> package implemented the post processing methods to deal with multiple measures values. This method is able to deal with descriptive statistic (resulting in a single value) or a distribution (resulting in multiple values).</p>
 <p>The post processing methods are setted using the parameter <code>summary</code>. It is possible to compute min, max, mean, median, kurtosis, standard deviation, among others. Any R method, can be used, as illustrated in the following examples:</p>
-<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb38-1" data-line-number="1"><span class="co">## Apply several statistical measures as post processing</span></a>
-<a class="sourceLine" id="cb38-2" data-line-number="2"><span class="kw">statistical</span>(Species <span class="op">~</span><span class="st"> </span>., iris, <span class="st">&quot;cor&quot;</span>, </a>
-<a class="sourceLine" id="cb38-3" data-line-number="3">               <span class="dt">summary=</span><span class="kw">c</span>(<span class="st">&quot;kurtosis&quot;</span>, <span class="st">&quot;max&quot;</span>, <span class="st">&quot;mean&quot;</span>, <span class="st">&quot;median&quot;</span>, <span class="st">&quot;min&quot;</span>, <span class="st">&quot;sd&quot;</span>, </a>
-<a class="sourceLine" id="cb38-4" data-line-number="4">                         <span class="st">&quot;skewness&quot;</span>, <span class="st">&quot;var&quot;</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb48-1" data-line-number="1"><span class="co">## Apply several statistical measures as post processing</span></a>
+<a class="sourceLine" id="cb48-2" data-line-number="2"><span class="kw">statistical</span>(Species <span class="op">~</span><span class="st"> </span>., iris, <span class="st">&quot;cor&quot;</span>, </a>
+<a class="sourceLine" id="cb48-3" data-line-number="3">               <span class="dt">summary=</span><span class="kw">c</span>(<span class="st">&quot;kurtosis&quot;</span>, <span class="st">&quot;max&quot;</span>, <span class="st">&quot;mean&quot;</span>, <span class="st">&quot;median&quot;</span>, <span class="st">&quot;min&quot;</span>, <span class="st">&quot;sd&quot;</span>, </a>
+<a class="sourceLine" id="cb48-4" data-line-number="4">                         <span class="st">&quot;skewness&quot;</span>, <span class="st">&quot;var&quot;</span>))</a></code></pre></div>
 <pre><code>## $cor
 ##   kurtosis        max       mean     median        min         sd 
 ## -1.9476130  0.9628654  0.5941160  0.6231906  0.1175698  0.3375443 
 ##   skewness        var 
 ## -0.1814291  0.1139362</code></pre>
-<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb40-1" data-line-number="1"><span class="co">## Apply quantile as post processing method</span></a>
-<a class="sourceLine" id="cb40-2" data-line-number="2"><span class="kw">statistical</span>(Species <span class="op">~</span><span class="st"> </span>., iris, <span class="st">&quot;cor&quot;</span>, <span class="dt">summary=</span><span class="st">&quot;quantile&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb50-1" data-line-number="1"><span class="co">## Apply quantile as post processing method</span></a>
+<a class="sourceLine" id="cb50-2" data-line-number="2"><span class="kw">statistical</span>(Species <span class="op">~</span><span class="st"> </span>., iris, <span class="st">&quot;cor&quot;</span>, <span class="dt">summary=</span><span class="st">&quot;quantile&quot;</span>)</a></code></pre></div>
 <pre><code>## $cor
 ##   quantile.0%  quantile.25%  quantile.50%  quantile.75% quantile.100% 
 ##     0.1175698     0.3817045     0.6231906     0.8583006     0.9628654</code></pre>
-<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb42-1" data-line-number="1"><span class="co">## Get the default values without summarize them</span></a>
-<a class="sourceLine" id="cb42-2" data-line-number="2"><span class="kw">statistical</span>(Species <span class="op">~</span><span class="st"> </span>., iris, <span class="st">&quot;cor&quot;</span>, <span class="dt">summary=</span><span class="kw">c</span>())</a></code></pre></div>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb52-1" data-line-number="1"><span class="co">## Get the default values without summarize them</span></a>
+<a class="sourceLine" id="cb52-2" data-line-number="2"><span class="kw">statistical</span>(Species <span class="op">~</span><span class="st"> </span>., iris, <span class="st">&quot;cor&quot;</span>, <span class="dt">summary=</span><span class="kw">c</span>())</a></code></pre></div>
 <pre><code>## $cor
 ## non.aggregated1 non.aggregated2 non.aggregated3 non.aggregated4 
 ##       0.1175698       0.8717538       0.4284401       0.8179411 
 ## non.aggregated5 non.aggregated6 
 ##       0.3661259       0.9628654</code></pre>
 <p>Beyond these R default methods, two additional post processing methods are available in the <code>mfe</code> package: <code>hist</code> and <code>non.aggregated</code>. The first computes a histogram of the values and returns the frequencies of in each bins. The extra parameters <code>bins</code> can be used to define the number of values to be returned. The parameters <code>min</code> and <code>max</code> are used to define the range of the data. The second is a way to obtain all values from the measure and has the same effect of the use of an empty list. The following code illustrate examples of the use of these post processing methods:</p>
-<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb44-1" data-line-number="1"><span class="co">## Apply histogram as post processing method</span></a>
-<a class="sourceLine" id="cb44-2" data-line-number="2"><span class="kw">statistical</span>(Species <span class="op">~</span><span class="st"> </span>., iris, <span class="st">&quot;cor&quot;</span>, <span class="dt">summary=</span><span class="st">&quot;hist&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb54-1" data-line-number="1"><span class="co">## Apply histogram as post processing method</span></a>
+<a class="sourceLine" id="cb54-2" data-line-number="2"><span class="kw">statistical</span>(Species <span class="op">~</span><span class="st"> </span>., iris, <span class="st">&quot;cor&quot;</span>, <span class="dt">summary=</span><span class="st">&quot;hist&quot;</span>)</a></code></pre></div>
 <p><img src="data:image/png;base64,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" /><!-- --></p>
 <pre><code>## $cor
 ##                                                                                                         hist.breaks1 
@@ -695,8 +762,8 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 ## &quot;c(0.117569784133002, 0.871753775886583, 0.42844010433054, 0.817941126271576, 0.366125932536439, 0.962865431402796)&quot; 
 ##                                                                                                        hist.equidist 
 ##                                                                                                               &quot;TRUE&quot;</code></pre>
-<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb46-1" data-line-number="1"><span class="co">## Apply histogram as post processing method and customize it</span></a>
-<a class="sourceLine" id="cb46-2" data-line-number="2"><span class="kw">statistical</span>(Species <span class="op">~</span><span class="st"> </span>., iris, <span class="st">&quot;cor&quot;</span>, <span class="dt">summary=</span><span class="st">&quot;hist&quot;</span>, <span class="dt">bins=</span><span class="dv">5</span>, <span class="dt">min=</span><span class="dv">0</span>, <span class="dt">max=</span><span class="dv">1</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb56-1" data-line-number="1"><span class="co">## Apply histogram as post processing method and customize it</span></a>
+<a class="sourceLine" id="cb56-2" data-line-number="2"><span class="kw">statistical</span>(Species <span class="op">~</span><span class="st"> </span>., iris, <span class="st">&quot;cor&quot;</span>, <span class="dt">summary=</span><span class="st">&quot;hist&quot;</span>, <span class="dt">bins=</span><span class="dv">5</span>, <span class="dt">min=</span><span class="dv">0</span>, <span class="dt">max=</span><span class="dv">1</span>)</a></code></pre></div>
 <pre><code>## Warning in plot.window(xlim, ylim, &quot;&quot;, ...): &quot;bins&quot; is not a graphical
 ## parameter</code></pre>
 <pre><code>## Warning in plot.window(xlim, ylim, &quot;&quot;, ...): &quot;min&quot; is not a graphical
@@ -763,19 +830,19 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 ## &quot;c(0.117569784133002, 0.871753775886583, 0.42844010433054, 0.817941126271576, 0.366125932536439, 0.962865431402796)&quot; 
 ##                                                                                                        hist.equidist 
 ##                                                                                                               &quot;TRUE&quot;</code></pre>
-<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb60-1" data-line-number="1"><span class="co">## Extract all correlation values</span></a>
-<a class="sourceLine" id="cb60-2" data-line-number="2"><span class="kw">statistical</span>(Species <span class="op">~</span><span class="st"> </span>., iris, <span class="st">&quot;cor&quot;</span>, <span class="dt">summary=</span><span class="st">&quot;non.aggregated&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb70-1" data-line-number="1"><span class="co">## Extract all correlation values</span></a>
+<a class="sourceLine" id="cb70-2" data-line-number="2"><span class="kw">statistical</span>(Species <span class="op">~</span><span class="st"> </span>., iris, <span class="st">&quot;cor&quot;</span>, <span class="dt">summary=</span><span class="st">&quot;non.aggregated&quot;</span>)</a></code></pre></div>
 <pre><code>## $cor
 ## non.aggregated1 non.aggregated2 non.aggregated3 non.aggregated4 
 ##       0.1175698       0.8717538       0.4284401       0.8179411 
 ## non.aggregated5 non.aggregated6 
 ##       0.3661259       0.9628654</code></pre>
 <p>It is also possible define an user’s post processing method, like this:</p>
-<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb62-1" data-line-number="1"><span class="co">## Compute the absolute difference between the mean and the median </span></a>
-<a class="sourceLine" id="cb62-2" data-line-number="2">my.method &lt;-<span class="st"> </span><span class="cf">function</span>(x, ...) <span class="kw">abs</span>(<span class="kw">mean</span>(x) <span class="op">-</span><span class="st"> </span><span class="kw">median</span>(x))</a>
-<a class="sourceLine" id="cb62-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb62-4" data-line-number="4"><span class="co">## Using the user defined post processing method</span></a>
-<a class="sourceLine" id="cb62-5" data-line-number="5"><span class="kw">statistical</span>(Species <span class="op">~</span><span class="st"> </span>., iris, <span class="st">&quot;cor&quot;</span>, <span class="dt">summary=</span><span class="st">&quot;my.method&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb72-1" data-line-number="1"><span class="co">## Compute the absolute difference between the mean and the median </span></a>
+<a class="sourceLine" id="cb72-2" data-line-number="2">my.method &lt;-<span class="st"> </span><span class="cf">function</span>(x, ...) <span class="kw">abs</span>(<span class="kw">mean</span>(x) <span class="op">-</span><span class="st"> </span><span class="kw">median</span>(x))</a>
+<a class="sourceLine" id="cb72-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb72-4" data-line-number="4"><span class="co">## Using the user defined post processing method</span></a>
+<a class="sourceLine" id="cb72-5" data-line-number="5"><span class="kw">statistical</span>(Species <span class="op">~</span><span class="st"> </span>., iris, <span class="st">&quot;cor&quot;</span>, <span class="dt">summary=</span><span class="st">&quot;my.method&quot;</span>)</a></code></pre></div>
 <pre><code>## $cor
 ##  my.method 
 ## 0.02907459</code></pre>
