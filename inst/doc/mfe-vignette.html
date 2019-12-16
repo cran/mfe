@@ -1,424 +1,421 @@
 <!DOCTYPE html>
-
-<html xmlns="http://www.w3.org/1999/xhtml">
-
+<html>
 <head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
-<meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="pandoc" />
+<title>Introduction</title>
 
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
-<meta name="author" content="Adriano Rivolli, Luis P. F. Garcia and Andre C. P. L. F. de Carvalho" />
-
-<meta name="date" content="2019-08-26" />
-
-<title>mfe: Meta-Feature Extractor</title>
-
-
-
-<style type="text/css">code{white-space: pre;}</style>
-<style type="text/css" data-origin="pandoc">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
-}
-pre.numberSource a.sourceLine
-  { position: relative; left: -4em; }
-pre.numberSource a.sourceLine::before
-  { content: attr(data-line-number);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-    color: #aaaaaa;
+<script type="text/javascript">
+window.onload = function() {
+  var imgs = document.getElementsByTagName('img'), i, img;
+  for (i = 0; i < imgs.length; i++) {
+    img = imgs[i];
+    // center an image if it is the only element of its parent
+    if (img.parentElement.childElementCount === 1)
+      img.parentElement.style.textAlign = 'center';
   }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
-div.sourceCode
-  {  }
-@media screen {
-a.sourceLine::before { text-decoration: underline; }
-}
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+};
+</script>
 
+<!-- Styles for R syntax highlighter -->
+<style type="text/css">
+   pre .operator,
+   pre .paren {
+     color: rgb(104, 118, 135)
+   }
+
+   pre .literal {
+     color: #990073
+   }
+
+   pre .number {
+     color: #099;
+   }
+
+   pre .comment {
+     color: #998;
+     font-style: italic
+   }
+
+   pre .keyword {
+     color: #900;
+     font-weight: bold
+   }
+
+   pre .identifier {
+     color: rgb(0, 0, 0);
+   }
+
+   pre .string {
+     color: #d14;
+   }
 </style>
-<script>
-// apply pandoc div.sourceCode style to pre.sourceCode instead
-(function() {
-  var sheets = document.styleSheets;
-  for (var i = 0; i < sheets.length; i++) {
-    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
-    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
-    for (var j = 0; j < rules.length; j++) {
-      var rule = rules[j];
-      // check if there is a div.sourceCode rule
-      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
-      var style = rule.style.cssText;
-      // check if color or background-color is set
-      if (rule.style.color === '' || rule.style.backgroundColor === '') continue;
-      // replace div.sourceCode by a pre.sourceCode rule
-      sheets[i].deleteRule(j);
-      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
-    }
-  }
-})();
+
+<!-- R syntax highlighter -->
+<script type="text/javascript">
+var hljs=new function(){function m(p){return p.replace(/&/gm,"&amp;").replace(/</gm,"&lt;")}function f(r,q,p){return RegExp(q,"m"+(r.cI?"i":"")+(p?"g":""))}function b(r){for(var p=0;p<r.childNodes.length;p++){var q=r.childNodes[p];if(q.nodeName=="CODE"){return q}if(!(q.nodeType==3&&q.nodeValue.match(/\s+/))){break}}}function h(t,s){var p="";for(var r=0;r<t.childNodes.length;r++){if(t.childNodes[r].nodeType==3){var q=t.childNodes[r].nodeValue;if(s){q=q.replace(/\n/g,"")}p+=q}else{if(t.childNodes[r].nodeName=="BR"){p+="\n"}else{p+=h(t.childNodes[r])}}}if(/MSIE [678]/.test(navigator.userAgent)){p=p.replace(/\r/g,"\n")}return p}function a(s){var r=s.className.split(/\s+/);r=r.concat(s.parentNode.className.split(/\s+/));for(var q=0;q<r.length;q++){var p=r[q].replace(/^language-/,"");if(e[p]){return p}}}function c(q){var p=[];(function(s,t){for(var r=0;r<s.childNodes.length;r++){if(s.childNodes[r].nodeType==3){t+=s.childNodes[r].nodeValue.length}else{if(s.childNodes[r].nodeName=="BR"){t+=1}else{if(s.childNodes[r].nodeType==1){p.push({event:"start",offset:t,node:s.childNodes[r]});t=arguments.callee(s.childNodes[r],t);p.push({event:"stop",offset:t,node:s.childNodes[r]})}}}}return t})(q,0);return p}function k(y,w,x){var q=0;var z="";var s=[];function u(){if(y.length&&w.length){if(y[0].offset!=w[0].offset){return(y[0].offset<w[0].offset)?y:w}else{return w[0].event=="start"?y:w}}else{return y.length?y:w}}function t(D){var A="<"+D.nodeName.toLowerCase();for(var B=0;B<D.attributes.length;B++){var C=D.attributes[B];A+=" "+C.nodeName.toLowerCase();if(C.value!==undefined&&C.value!==false&&C.value!==null){A+='="'+m(C.value)+'"'}}return A+">"}while(y.length||w.length){var v=u().splice(0,1)[0];z+=m(x.substr(q,v.offset-q));q=v.offset;if(v.event=="start"){z+=t(v.node);s.push(v.node)}else{if(v.event=="stop"){var p,r=s.length;do{r--;p=s[r];z+=("</"+p.nodeName.toLowerCase()+">")}while(p!=v.node);s.splice(r,1);while(r<s.length){z+=t(s[r]);r++}}}}return z+m(x.substr(q))}function j(){function q(x,y,v){if(x.compiled){return}var u;var s=[];if(x.k){x.lR=f(y,x.l||hljs.IR,true);for(var w in x.k){if(!x.k.hasOwnProperty(w)){continue}if(x.k[w] instanceof Object){u=x.k[w]}else{u=x.k;w="keyword"}for(var r in u){if(!u.hasOwnProperty(r)){continue}x.k[r]=[w,u[r]];s.push(r)}}}if(!v){if(x.bWK){x.b="\\b("+s.join("|")+")\\s"}x.bR=f(y,x.b?x.b:"\\B|\\b");if(!x.e&&!x.eW){x.e="\\B|\\b"}if(x.e){x.eR=f(y,x.e)}}if(x.i){x.iR=f(y,x.i)}if(x.r===undefined){x.r=1}if(!x.c){x.c=[]}x.compiled=true;for(var t=0;t<x.c.length;t++){if(x.c[t]=="self"){x.c[t]=x}q(x.c[t],y,false)}if(x.starts){q(x.starts,y,false)}}for(var p in e){if(!e.hasOwnProperty(p)){continue}q(e[p].dM,e[p],true)}}function d(B,C){if(!j.called){j();j.called=true}function q(r,M){for(var L=0;L<M.c.length;L++){if((M.c[L].bR.exec(r)||[null])[0]==r){return M.c[L]}}}function v(L,r){if(D[L].e&&D[L].eR.test(r)){return 1}if(D[L].eW){var M=v(L-1,r);return M?M+1:0}return 0}function w(r,L){return L.i&&L.iR.test(r)}function K(N,O){var M=[];for(var L=0;L<N.c.length;L++){M.push(N.c[L].b)}var r=D.length-1;do{if(D[r].e){M.push(D[r].e)}r--}while(D[r+1].eW);if(N.i){M.push(N.i)}return f(O,M.join("|"),true)}function p(M,L){var N=D[D.length-1];if(!N.t){N.t=K(N,E)}N.t.lastIndex=L;var r=N.t.exec(M);return r?[M.substr(L,r.index-L),r[0],false]:[M.substr(L),"",true]}function z(N,r){var L=E.cI?r[0].toLowerCase():r[0];var M=N.k[L];if(M&&M instanceof Array){return M}return false}function F(L,P){L=m(L);if(!P.k){return L}var r="";var O=0;P.lR.lastIndex=0;var M=P.lR.exec(L);while(M){r+=L.substr(O,M.index-O);var N=z(P,M);if(N){x+=N[1];r+='<span class="'+N[0]+'">'+M[0]+"</span>"}else{r+=M[0]}O=P.lR.lastIndex;M=P.lR.exec(L)}return r+L.substr(O,L.length-O)}function J(L,M){if(M.sL&&e[M.sL]){var r=d(M.sL,L);x+=r.keyword_count;return r.value}else{return F(L,M)}}function I(M,r){var L=M.cN?'<span class="'+M.cN+'">':"";if(M.rB){y+=L;M.buffer=""}else{if(M.eB){y+=m(r)+L;M.buffer=""}else{y+=L;M.buffer=r}}D.push(M);A+=M.r}function G(N,M,Q){var R=D[D.length-1];if(Q){y+=J(R.buffer+N,R);return false}var P=q(M,R);if(P){y+=J(R.buffer+N,R);I(P,M);return P.rB}var L=v(D.length-1,M);if(L){var O=R.cN?"</span>":"";if(R.rE){y+=J(R.buffer+N,R)+O}else{if(R.eE){y+=J(R.buffer+N,R)+O+m(M)}else{y+=J(R.buffer+N+M,R)+O}}while(L>1){O=D[D.length-2].cN?"</span>":"";y+=O;L--;D.length--}var r=D[D.length-1];D.length--;D[D.length-1].buffer="";if(r.starts){I(r.starts,"")}return R.rE}if(w(M,R)){throw"Illegal"}}var E=e[B];var D=[E.dM];var A=0;var x=0;var y="";try{var s,u=0;E.dM.buffer="";do{s=p(C,u);var t=G(s[0],s[1],s[2]);u+=s[0].length;if(!t){u+=s[1].length}}while(!s[2]);if(D.length>1){throw"Illegal"}return{r:A,keyword_count:x,value:y}}catch(H){if(H=="Illegal"){return{r:0,keyword_count:0,value:m(C)}}else{throw H}}}function g(t){var p={keyword_count:0,r:0,value:m(t)};var r=p;for(var q in e){if(!e.hasOwnProperty(q)){continue}var s=d(q,t);s.language=q;if(s.keyword_count+s.r>r.keyword_count+r.r){r=s}if(s.keyword_count+s.r>p.keyword_count+p.r){r=p;p=s}}if(r.language){p.second_best=r}return p}function i(r,q,p){if(q){r=r.replace(/^((<[^>]+>|\t)+)/gm,function(t,w,v,u){return w.replace(/\t/g,q)})}if(p){r=r.replace(/\n/g,"<br>")}return r}function n(t,w,r){var x=h(t,r);var v=a(t);var y,s;if(v){y=d(v,x)}else{return}var q=c(t);if(q.length){s=document.createElement("pre");s.innerHTML=y.value;y.value=k(q,c(s),x)}y.value=i(y.value,w,r);var u=t.className;if(!u.match("(\\s|^)(language-)?"+v+"(\\s|$)")){u=u?(u+" "+v):v}if(/MSIE [678]/.test(navigator.userAgent)&&t.tagName=="CODE"&&t.parentNode.tagName=="PRE"){s=t.parentNode;var p=document.createElement("div");p.innerHTML="<pre><code>"+y.value+"</code></pre>";t=p.firstChild.firstChild;p.firstChild.cN=s.cN;s.parentNode.replaceChild(p.firstChild,s)}else{t.innerHTML=y.value}t.className=u;t.result={language:v,kw:y.keyword_count,re:y.r};if(y.second_best){t.second_best={language:y.second_best.language,kw:y.second_best.keyword_count,re:y.second_best.r}}}function o(){if(o.called){return}o.called=true;var r=document.getElementsByTagName("pre");for(var p=0;p<r.length;p++){var q=b(r[p]);if(q){n(q,hljs.tabReplace)}}}function l(){if(window.addEventListener){window.addEventListener("DOMContentLoaded",o,false);window.addEventListener("load",o,false)}else{if(window.attachEvent){window.attachEvent("onload",o)}else{window.onload=o}}}var e={};this.LANGUAGES=e;this.highlight=d;this.highlightAuto=g;this.fixMarkup=i;this.highlightBlock=n;this.initHighlighting=o;this.initHighlightingOnLoad=l;this.IR="[a-zA-Z][a-zA-Z0-9_]*";this.UIR="[a-zA-Z_][a-zA-Z0-9_]*";this.NR="\\b\\d+(\\.\\d+)?";this.CNR="\\b(0[xX][a-fA-F0-9]+|(\\d+(\\.\\d*)?|\\.\\d+)([eE][-+]?\\d+)?)";this.BNR="\\b(0b[01]+)";this.RSR="!|!=|!==|%|%=|&|&&|&=|\\*|\\*=|\\+|\\+=|,|\\.|-|-=|/|/=|:|;|<|<<|<<=|<=|=|==|===|>|>=|>>|>>=|>>>|>>>=|\\?|\\[|\\{|\\(|\\^|\\^=|\\||\\|=|\\|\\||~";this.ER="(?![\\s\\S])";this.BE={b:"\\\\.",r:0};this.ASM={cN:"string",b:"'",e:"'",i:"\\n",c:[this.BE],r:0};this.QSM={cN:"string",b:'"',e:'"',i:"\\n",c:[this.BE],r:0};this.CLCM={cN:"comment",b:"//",e:"$"};this.CBLCLM={cN:"comment",b:"/\\*",e:"\\*/"};this.HCM={cN:"comment",b:"#",e:"$"};this.NM={cN:"number",b:this.NR,r:0};this.CNM={cN:"number",b:this.CNR,r:0};this.BNM={cN:"number",b:this.BNR,r:0};this.inherit=function(r,s){var p={};for(var q in r){p[q]=r[q]}if(s){for(var q in s){p[q]=s[q]}}return p}}();hljs.LANGUAGES.cpp=function(){var a={keyword:{"false":1,"int":1,"float":1,"while":1,"private":1,"char":1,"catch":1,"export":1,virtual:1,operator:2,sizeof:2,dynamic_cast:2,typedef:2,const_cast:2,"const":1,struct:1,"for":1,static_cast:2,union:1,namespace:1,unsigned:1,"long":1,"throw":1,"volatile":2,"static":1,"protected":1,bool:1,template:1,mutable:1,"if":1,"public":1,friend:2,"do":1,"return":1,"goto":1,auto:1,"void":2,"enum":1,"else":1,"break":1,"new":1,extern:1,using:1,"true":1,"class":1,asm:1,"case":1,typeid:1,"short":1,reinterpret_cast:2,"default":1,"double":1,register:1,explicit:1,signed:1,typename:1,"try":1,"this":1,"switch":1,"continue":1,wchar_t:1,inline:1,"delete":1,alignof:1,char16_t:1,char32_t:1,constexpr:1,decltype:1,noexcept:1,nullptr:1,static_assert:1,thread_local:1,restrict:1,_Bool:1,complex:1},built_in:{std:1,string:1,cin:1,cout:1,cerr:1,clog:1,stringstream:1,istringstream:1,ostringstream:1,auto_ptr:1,deque:1,list:1,queue:1,stack:1,vector:1,map:1,set:1,bitset:1,multiset:1,multimap:1,unordered_set:1,unordered_map:1,unordered_multiset:1,unordered_multimap:1,array:1,shared_ptr:1}};return{dM:{k:a,i:"</",c:[hljs.CLCM,hljs.CBLCLM,hljs.QSM,{cN:"string",b:"'\\\\?.",e:"'",i:"."},{cN:"number",b:"\\b(\\d+(\\.\\d*)?|\\.\\d+)(u|U|l|L|ul|UL|f|F)"},hljs.CNM,{cN:"preprocessor",b:"#",e:"$"},{cN:"stl_container",b:"\\b(deque|list|queue|stack|vector|map|set|bitset|multiset|multimap|unordered_map|unordered_set|unordered_multiset|unordered_multimap|array)\\s*<",e:">",k:a,r:10,c:["self"]}]}}}();hljs.LANGUAGES.r={dM:{c:[hljs.HCM,{cN:"number",b:"\\b0[xX][0-9a-fA-F]+[Li]?\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\b\\d+(?:[eE][+\\-]?\\d*)?L\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\b\\d+\\.(?!\\d)(?:i\\b)?",e:hljs.IMMEDIATE_RE,r:1},{cN:"number",b:"\\b\\d+(?:\\.\\d*)?(?:[eE][+\\-]?\\d*)?i?\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\.\\d+(?:[eE][+\\-]?\\d*)?i?\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"keyword",b:"(?:tryCatch|library|setGeneric|setGroupGeneric)\\b",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\.\\.\\.",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\.\\.\\d+(?![\\w.])",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\b(?:function)",e:hljs.IMMEDIATE_RE,r:2},{cN:"keyword",b:"(?:if|in|break|next|repeat|else|for|return|switch|while|try|stop|warning|require|attach|detach|source|setMethod|setClass)\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"literal",b:"(?:NA|NA_integer_|NA_real_|NA_character_|NA_complex_)\\b",e:hljs.IMMEDIATE_RE,r:10},{cN:"literal",b:"(?:NULL|TRUE|FALSE|T|F|Inf|NaN)\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"identifier",b:"[a-zA-Z.][a-zA-Z0-9._]*\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"operator",b:"<\\-(?!\\s*\\d)",e:hljs.IMMEDIATE_RE,r:2},{cN:"operator",b:"\\->|<\\-",e:hljs.IMMEDIATE_RE,r:1},{cN:"operator",b:"%%|~",e:hljs.IMMEDIATE_RE},{cN:"operator",b:">=|<=|==|!=|\\|\\||&&|=|\\+|\\-|\\*|/|\\^|>|<|!|&|\\||\\$|:",e:hljs.IMMEDIATE_RE,r:0},{cN:"operator",b:"%",e:"%",i:"\\n",r:1},{cN:"identifier",b:"`",e:"`",r:0},{cN:"string",b:'"',e:'"',c:[hljs.BE],r:0},{cN:"string",b:"'",e:"'",c:[hljs.BE],r:0},{cN:"paren",b:"[[({\\])}]",e:hljs.IMMEDIATE_RE,r:0}]}};
+hljs.initHighlightingOnLoad();
 </script>
 
 
 
-<style type="text/css">body {
-background-color: #fff;
-margin: 1em auto;
-max-width: 700px;
-overflow: visible;
-padding-left: 2em;
-padding-right: 2em;
-font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
-font-size: 14px;
-line-height: 1.35;
+<style type="text/css">
+body, td {
+   font-family: sans-serif;
+   background-color: white;
+   font-size: 13px;
 }
-#header {
-text-align: center;
+
+body {
+  max-width: 800px;
+  margin: auto;
+  padding: 1em;
+  line-height: 20px;
 }
-#TOC {
-clear: both;
-margin: 0 0 10px 10px;
-padding: 4px;
-width: 400px;
-border: 1px solid #CCCCCC;
-border-radius: 5px;
-background-color: #f6f6f6;
-font-size: 13px;
-line-height: 1.3;
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
 }
-#TOC .toctitle {
-font-weight: bold;
-font-size: 15px;
-margin-left: 5px;
+
+h1 {
+   font-size:2.2em;
 }
-#TOC ul {
-padding-left: 40px;
-margin-left: -1.5em;
-margin-top: 5px;
-margin-bottom: 5px;
+
+h2 {
+   font-size:1.8em;
 }
-#TOC ul ul {
-margin-left: -2em;
+
+h3 {
+   font-size:1.4em;
 }
-#TOC li {
-line-height: 16px;
+
+h4 {
+   font-size:1.0em;
 }
-table {
-margin: 1em auto;
-border-width: 1px;
-border-color: #DDDDDD;
-border-style: outset;
-border-collapse: collapse;
+
+h5 {
+   font-size:0.9em;
 }
-table th {
-border-width: 2px;
-padding: 5px;
-border-style: inset;
+
+h6 {
+   font-size:0.8em;
 }
-table td {
-border-width: 1px;
-border-style: inset;
-line-height: 18px;
-padding: 5px 5px;
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
 }
-table, table th, table td {
-border-left-style: none;
-border-right-style: none;
-}
-table thead, table tr.even {
-background-color: #f7f7f7;
-}
-p {
-margin: 0.5em 0;
-}
-blockquote {
-background-color: #f6f6f6;
-padding: 0.25em 0.75em;
-}
-hr {
-border-style: solid;
-border: none;
-border-top: 1px solid #777;
-margin: 28px 0;
-}
-dl {
-margin-left: 0;
-}
-dl dd {
-margin-bottom: 13px;
-margin-left: 13px;
-}
-dl dt {
-font-weight: bold;
-}
-ul {
-margin-top: 0;
-}
-ul li {
-list-style: circle outside;
-}
-ul ul {
-margin-bottom: 0;
-}
-pre, code {
-background-color: #f7f7f7;
-border-radius: 3px;
-color: #333;
-white-space: pre-wrap; 
+
+pre, img {
+  max-width: 100%;
 }
 pre {
-border-radius: 3px;
-margin: 5px 0px 10px 0px;
-padding: 10px;
+  overflow-x: auto;
 }
-pre:not([class]) {
-background-color: #f7f7f7;
+pre code {
+   display: block; padding: 0.5em;
 }
+
 code {
-font-family: Consolas, Monaco, 'Courier New', monospace;
-font-size: 85%;
+  font-size: 92%;
+  border: 1px solid #ccc;
 }
-p > code, li > code {
-padding: 2px 0px;
-}
-div.figure {
-text-align: center;
-}
-img {
-background-color: #FFFFFF;
-padding: 2px;
-border: 1px solid #DDDDDD;
-border-radius: 3px;
-border: 1px solid #CCCCCC;
-margin: 0 5px;
-}
-h1 {
-margin-top: 0;
-font-size: 35px;
-line-height: 40px;
-}
-h2 {
-border-bottom: 4px solid #f7f7f7;
-padding-top: 10px;
-padding-bottom: 2px;
-font-size: 145%;
-}
-h3 {
-border-bottom: 2px solid #f7f7f7;
-padding-top: 10px;
-font-size: 120%;
-}
-h4 {
-border-bottom: 1px solid #f7f7f7;
-margin-left: 8px;
-font-size: 105%;
-}
-h5, h6 {
-border-bottom: 1px solid #ccc;
-font-size: 105%;
-}
-a {
-color: #0033dd;
-text-decoration: none;
-}
-a:hover {
-color: #6666ff; }
-a:visited {
-color: #800080; }
-a:visited:hover {
-color: #BB00BB; }
-a[href^="http:"] {
-text-decoration: underline; }
-a[href^="https:"] {
-text-decoration: underline; }
 
-code > span.kw { color: #555; font-weight: bold; } 
-code > span.dt { color: #902000; } 
-code > span.dv { color: #40a070; } 
-code > span.bn { color: #d14; } 
-code > span.fl { color: #d14; } 
-code > span.ch { color: #d14; } 
-code > span.st { color: #d14; } 
-code > span.co { color: #888888; font-style: italic; } 
-code > span.ot { color: #007020; } 
-code > span.al { color: #ff0000; font-weight: bold; } 
-code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61717; background-color: #e3d2d2; } 
+code[class] {
+  background-color: #F8F8F8;
+}
+
+table, td, th {
+  border: none;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+@media print {
+   * {
+      background: transparent !important;
+      color: black !important;
+      filter:none !important;
+      -ms-filter: none !important;
+   }
+
+   body {
+      font-size:12pt;
+      max-width:100%;
+   }
+
+   a, a:visited {
+      text-decoration: underline;
+   }
+
+   hr {
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote {
+      padding-right: 1em;
+      page-break-inside: avoid;
+   }
+
+   tr, img {
+      page-break-inside: avoid;
+   }
+
+   img {
+      max-width: 100% !important;
+   }
+
+   @page :left {
+      margin: 15mm 20mm 15mm 10mm;
+   }
+
+   @page :right {
+      margin: 15mm 10mm 15mm 20mm;
+   }
+
+   p, h2, h3 {
+      orphans: 3; widows: 3;
+   }
+
+   h2, h3 {
+      page-break-after: avoid;
+   }
+}
 </style>
-
 
 
 
 </head>
 
 <body>
-
-
-
-
-<h1 class="title toc-ignore">mfe: Meta-Feature Extractor</h1>
-<h4 class="author">Adriano Rivolli, Luis P. F. Garcia and Andre C. P. L. F. de Carvalho</h4>
-<h4 class="date">2019-08-26</h4>
-
-
-
-<div id="introduction" class="section level1">
 <h1>Introduction</h1>
-<p>Extracts meta-features from datasets to support the design of recommendation systems based on Meta-Learning (MtL). The meta-features, also called characterization measures, are able to characterize the complexity of datasets and to provide estimates of algorithm performance. The package contains not only the standard, but also more recent characterization measures. By making available a large set of meta-feature extraction functions, this package allows a comprehensive data characterization, a deep data exploration and a large number of MtL-based data analysis.</p>
-<p>In MtL, meta-features are designed to extract general properties able to characterize datasets. The meta-feature values should provide relevant evidences about the performance of algorithms, allowing the design of MtL-based recommendation systems. Thus, these measures must be able to predict, with a low computational cost, the performance of the algorithms under evaluation. In this package, the meta-feature measures are divided into five groups:</p>
+
+<p>Extracts meta-features from datasets to support the design of recommendation 
+systems based on Meta-Learning (MtL). The meta-features, also called 
+characterization measures, are able to characterize the complexity of datasets 
+and to provide estimates of algorithm performance. The package contains not 
+only the standard, but also more recent characterization measures. By making 
+available a large set of meta-feature extraction functions, this package allows 
+a comprehensive data characterization, a deep data exploration and a large 
+number of MtL-based data analysis.</p>
+
+<p>In MtL, meta-features are designed to extract general properties able to 
+characterize datasets. The meta-feature values should provide relevant 
+evidences about the performance of algorithms, allowing the design of MtL-based 
+recommendation systems. Thus, these measures must be able to predict, with a 
+low computational cost, the performance of the algorithms under evaluation. In 
+this package, the meta-feature measures are divided into five groups:</p>
+
 <ul>
-<li><strong>General</strong>: General information related to the dataset, also known as simple measures, such as number of instances, attributes and classes.</li>
-<li><strong>Statistical</strong>: Standard statistical measures to describe the numerical properties of a distribution of data and also the discriminant measures.</li>
-<li><strong>Information-theoretic</strong>: Particularly appropriate to describe discrete (categorical) attributes and their relationship with the classes.</li>
-<li><strong>Decision Tree Model-based</strong>: Measures designed to extract characteristics like the depth, the shape and size of a Decision Tree (DT) model induced from a dataset.</li>
-<li><strong>Landmarking</strong>: Represents the performance of simple and efficient learning algorithms.</li>
+<li><strong>General</strong>: General information related to the dataset, also known as simple 
+measures, such as number of instances, attributes and classes.</li>
+<li><strong>Statistical</strong>: Standard statistical measures to describe the numerical 
+properties of a distribution of data and also the discriminant measures.</li>
+<li><strong>Information-theoretic</strong>: Particularly appropriate to describe discrete 
+(categorical) attributes and their relationship with the classes.</li>
+<li><strong>Decision Tree Model-based</strong>: Measures designed to extract characteristics 
+like the depth, the shape and size of a Decision Tree (DT) model induced from a 
+dataset.</li>
+<li><strong>Landmarking</strong>: Represents the performance of simple and efficient learning 
+algorithms.</li>
 </ul>
-<p>In the following sections we will briefly introduce how to use the <code>mfe</code> package to extract all the measures using standard methods as well as to extract specific measures using methods for each group. Once the package is loaded, the vignette is also available inside R with the command <code>browseVignettes</code>.</p>
-</div>
-<div id="extracting-meta-features" class="section level1">
+
+<p>In the following sections we will briefly introduce how to use the <code>mfe</code> 
+package to extract all the measures using standard methods as well as to extract 
+specific measures using methods for each group. Once the package is loaded, the 
+vignette is also available inside R with the command <code>browseVignettes</code>.</p>
+
 <h1>Extracting meta-features</h1>
-<p>The standard way to extract meta-features is using the <code>metafeatures</code> methods. The method can be used by a symbolic description of the model (formula) or by a data frame. The parameters are the dataset and the group of measures to be extracted. By default, the method extract all the measures. For instance:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">library</span>(mfe)</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="co">## Extract all measures using formula</span></a>
-<a class="sourceLine" id="cb1-4" data-line-number="4">iris.info &lt;-<span class="st"> </span><span class="kw">metafeatures</span>(Species <span class="op">~</span><span class="st"> </span>., iris)</a>
-<a class="sourceLine" id="cb1-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb1-6" data-line-number="6"><span class="co">## Extract all measures using data frame</span></a>
-<a class="sourceLine" id="cb1-7" data-line-number="7">iris.info &lt;-<span class="st"> </span><span class="kw">metafeatures</span>(iris[,<span class="dv">1</span><span class="op">:</span><span class="dv">4</span>], iris[,<span class="dv">5</span>])</a>
-<a class="sourceLine" id="cb1-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb1-9" data-line-number="9"><span class="co">## Extract general, statistical and information-theoretic measures</span></a>
-<a class="sourceLine" id="cb1-10" data-line-number="10">iris.info &lt;-<span class="st"> </span><span class="kw">metafeatures</span>(Species <span class="op">~</span><span class="st"> </span>., iris, </a>
-<a class="sourceLine" id="cb1-11" data-line-number="11">                          <span class="dt">groups=</span><span class="kw">c</span>(<span class="st">&quot;general&quot;</span>, <span class="st">&quot;statistical&quot;</span>, <span class="st">&quot;infotheo&quot;</span>))</a></code></pre></div>
-<p>Several measures return more than one value. To aggregate them, post processing methods can be used. It is possible to compute min, max, mean, median, kurtosis, standard deviation, among others. The default methods are the <code>mean</code> and the <code>sd</code>. For instance:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="co">## Compute all measures using min, median and max </span></a>
-<a class="sourceLine" id="cb2-2" data-line-number="2">iris.info &lt;-<span class="st"> </span><span class="kw">metafeatures</span>(Species <span class="op">~</span><span class="st"> </span>., iris, <span class="dt">summary=</span><span class="kw">c</span>(<span class="st">&quot;min&quot;</span>, <span class="st">&quot;median&quot;</span>, <span class="st">&quot;max&quot;</span>))</a>
-<a class="sourceLine" id="cb2-3" data-line-number="3">                          </a>
-<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="co">## Compute all measures using quantile</span></a>
-<a class="sourceLine" id="cb2-5" data-line-number="5">iris.info &lt;-<span class="st"> </span><span class="kw">metafeatures</span>(Species <span class="op">~</span><span class="st"> </span>., iris, <span class="dt">summary=</span><span class="st">&quot;quantile&quot;</span>)</a></code></pre></div>
-</div>
-<div id="extracting-meta-features-by-group" class="section level1">
+
+<p>The standard way to extract meta-features is using the <code>metafeatures</code> methods. 
+The method can be used by a symbolic description of the model (formula) or by a 
+data frame. The parameters are the dataset and the group of measures to be 
+extracted. By default, the method extract all the measures. For instance:</p>
+
+<pre><code class="r">library(mfe)
+
+## Extract all measures using formula
+iris.info &lt;- metafeatures(Species ~ ., iris)
+
+## Extract all measures using data frame
+iris.info &lt;- metafeatures(iris[,1:4], iris[,5])
+
+## Extract general, statistical and information-theoretic measures
+iris.info &lt;- metafeatures(Species ~ ., iris, 
+                          groups=c(&quot;general&quot;, &quot;statistical&quot;, &quot;infotheo&quot;))
+</code></pre>
+
+<p>Several measures return more than one value. To aggregate them, post processing 
+methods can be used. It is possible to compute min, max, mean, median, kurtosis,
+ standard deviation, among others. The default methods are the <code>mean</code> and the 
+ <code>sd</code>. For instance:</p>
+
+<pre><code class="r">## Compute all measures using min, median and max 
+iris.info &lt;- metafeatures(Species ~ ., iris, summary=c(&quot;min&quot;, &quot;median&quot;, &quot;max&quot;))
+
+## Compute all measures using quantile
+iris.info &lt;- metafeatures(Species ~ ., iris, summary=&quot;quantile&quot;)
+</code></pre>
+
 <h1>Extracting meta-features by group</h1>
-<p>To customize the measure extraction, is necessary to use specific methods for each group of measures. For instance, <code>infotheo</code> and <code>statistical</code> compute the information theoretical and the statistical measures, respectively. The following examples illustrate these cases:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="co">## Extract two information theoretical measures</span></a>
-<a class="sourceLine" id="cb3-2" data-line-number="2">stat.iris &lt;-<span class="st"> </span><span class="kw">infotheo</span>(Species <span class="op">~</span><span class="st"> </span>., iris, </a>
-<a class="sourceLine" id="cb3-3" data-line-number="3">                         <span class="dt">features=</span><span class="kw">c</span>(<span class="st">&quot;attrEnt&quot;</span>, <span class="st">&quot;jointEnt&quot;</span>))</a>
-<a class="sourceLine" id="cb3-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb3-5" data-line-number="5"><span class="co">## Extract three statistical measures</span></a>
-<a class="sourceLine" id="cb3-6" data-line-number="6">disc.iris &lt;-<span class="st"> </span><span class="kw">statistical</span>(Species <span class="op">~</span><span class="st"> </span>., iris, </a>
-<a class="sourceLine" id="cb3-7" data-line-number="7">                            <span class="dt">features=</span><span class="kw">c</span>(<span class="st">&quot;cancor&quot;</span>, <span class="st">&quot;cor&quot;</span>, <span class="st">&quot;iqr&quot;</span>))</a>
-<a class="sourceLine" id="cb3-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb3-9" data-line-number="9"><span class="co">## Extract the histogram for the correlation measure</span></a>
-<a class="sourceLine" id="cb3-10" data-line-number="10">hist.iris &lt;-<span class="st"> </span><span class="kw">statistical</span>(Species <span class="op">~</span><span class="st"> </span>., iris, </a>
-<a class="sourceLine" id="cb3-11" data-line-number="11">                            <span class="dt">features=</span><span class="st">&quot;cor&quot;</span>, <span class="dt">summary=</span><span class="st">&quot;hist&quot;</span>)</a></code></pre></div>
-<p><img src="data:image/png;base64,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" /><!-- --></p>
-<p>Different from the <code>metafeatures</code> method, these methods receive a parameter called <code>features</code>, to define which features are required, and return a list instead of a numeric vector. In additional, some groups can be customized using additional arguments.</p>
-<p>There are five measure groups which can be either general information about the dataset, statistical information, descriptors about information theoretical, measures designed to extract characteristics about the DT model or landmarks which represent the performance of simple algorithms applied to the dataset. The following example show the available groups:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="co">## Show the the available groups</span></a>
-<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="kw">ls.metafeatures</span>()</a></code></pre></div>
-<pre><code>## [1] &quot;general&quot;     &quot;statistical&quot; &quot;infotheo&quot;    &quot;model.based&quot; &quot;landmarking&quot;
-## [6] &quot;relative&quot;    &quot;clustering&quot;</code></pre>
-<div id="general" class="section level2">
+
+<p>To customize the measure extraction, is necessary to use specific methods for 
+each group of measures. For instance, <code>infotheo</code> and <code>statistical</code> compute 
+the information theoretical and the statistical measures, respectively. The 
+following examples illustrate these cases:</p>
+
+<pre><code class="r">## Extract two information theoretical measures
+stat.iris &lt;- infotheo(Species ~ ., iris, 
+                         features=c(&quot;attrEnt&quot;, &quot;jointEnt&quot;))
+
+## Extract three statistical measures
+disc.iris &lt;- statistical(Species ~ ., iris, 
+                            features=c(&quot;cancor&quot;, &quot;cor&quot;, &quot;iqr&quot;))
+
+## Extract the histogram for the correlation measure
+hist.iris &lt;- statistical(Species ~ ., iris, 
+                            features=&quot;cor&quot;, summary=&quot;hist&quot;)
+</code></pre>
+
+<p><img src="data:image/png;base64,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" alt="plot of chunk unnamed-chunk-3"/></p>
+
+<p>Different from the <code>metafeatures</code> method, these methods receive a parameter 
+called <code>features</code>, to define which features are required, and return a list 
+instead of a numeric vector. In additional, some groups can be customized using
+additional arguments.</p>
+
+<p>There are five measure groups which can be either general information about the 
+dataset, statistical information, descriptors about information theoretical, 
+measures designed to extract characteristics about the DT model or landmarks 
+which represent the performance of simple algorithms applied to the dataset. 
+The following example show the available groups:</p>
+
+<pre><code class="r">## Show the the available groups
+ls.metafeatures()
+</code></pre>
+
+<pre><code>##  [1] &quot;general&quot;     &quot;statistical&quot; &quot;infotheo&quot;    &quot;model.based&quot; &quot;landmarking&quot;
+##  [6] &quot;relative&quot;    &quot;clustering&quot;  &quot;complexity&quot;  &quot;concept&quot;     &quot;itemset&quot;
+</code></pre>
+
 <h2>General</h2>
-<p>These are the most simple measures for extracting general properties of the datasets. For instance, <code>nrAttr</code> and <code>nrClass</code> are the total number of attributes in the dataset and the number of output values (classes) in the dataset, respectively. To list the measures of this group use <code>ls.general()</code>. The following examples illustrate these measures:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="co">## Show the the available general measures</span></a>
-<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="kw">ls.general</span>()</a></code></pre></div>
+
+<p>These are the most simple measures for extracting general properties of the 
+datasets. For instance, <code>nrAttr</code> and <code>nrClass</code> are the total number of 
+attributes in the dataset and the number of output values (classes) in the 
+dataset, respectively. To list the measures of this group use <code>ls.general()</code>. 
+The following examples illustrate these measures:</p>
+
+<pre><code class="r">## Show the the available general measures
+ls.general()
+</code></pre>
+
 <pre><code>##  [1] &quot;attrToInst&quot; &quot;catToNum&quot;   &quot;freqClass&quot;  &quot;instToAttr&quot; &quot;nrAttr&quot;    
 ##  [6] &quot;nrBin&quot;      &quot;nrCat&quot;      &quot;nrClass&quot;    &quot;nrInst&quot;     &quot;nrNum&quot;     
-## [11] &quot;numToCat&quot;</code></pre>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="co">## Extract all general measures</span></a>
-<a class="sourceLine" id="cb8-2" data-line-number="2">general.iris &lt;-<span class="st"> </span><span class="kw">general</span>(Species <span class="op">~</span><span class="st"> </span>., iris)</a>
-<a class="sourceLine" id="cb8-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb8-4" data-line-number="4"><span class="co">## Extract two general measures</span></a>
-<a class="sourceLine" id="cb8-5" data-line-number="5"><span class="kw">general</span>(Species <span class="op">~</span><span class="st"> </span>., iris, <span class="dt">features=</span><span class="kw">c</span>(<span class="st">&quot;nrAttr&quot;</span>, <span class="st">&quot;nrClass&quot;</span>))</a></code></pre></div>
+## [11] &quot;numToCat&quot;
+</code></pre>
+
+<pre><code class="r">## Extract all general measures
+general.iris &lt;- general(Species ~ ., iris)
+
+## Extract two general measures
+general(Species ~ ., iris, features=c(&quot;nrAttr&quot;, &quot;nrClass&quot;))
+</code></pre>
+
 <pre><code>## $nrAttr
 ## [1] 4
 ## 
 ## $nrClass
-## [1] 3</code></pre>
-<p>The general measures return a list named by the requested measures. The <code>post.processing</code> methods are applied only for the <code>freqClass</code> meta-feature. For instance, to extract the minimum, maximum and the standard deviation of the classes proportion use:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="co">## Extract two general measures</span></a>
-<a class="sourceLine" id="cb10-2" data-line-number="2"><span class="kw">general</span>(Species <span class="op">~</span><span class="st"> </span>., iris, <span class="dt">features=</span><span class="st">&quot;freqClass&quot;</span>, <span class="dt">summary=</span><span class="kw">c</span>(<span class="st">&quot;min&quot;</span>, <span class="st">&quot;max&quot;</span>, <span class="st">&quot;sd&quot;</span>))</a></code></pre></div>
+## [1] 3
+</code></pre>
+
+<p>The general measures return a list named by the requested measures. The 
+<code>post.processing</code> methods are applied only for the <code>freqClass</code> meta-feature. For
+instance, to extract the minimum, maximum and the standard deviation of the
+classes proportion use:</p>
+
+<pre><code class="r">## Extract two general measures
+general(Species ~ ., iris, features=&quot;freqClass&quot;, summary=c(&quot;min&quot;, &quot;max&quot;, &quot;sd&quot;))
+</code></pre>
+
 <pre><code>## $freqClass
 ##       min       max        sd 
-## 0.3333333 0.3333333 0.0000000</code></pre>
-</div>
-<div id="statistical" class="section level2">
+## 0.3333333 0.3333333 0.0000000
+</code></pre>
+
 <h2>Statistical</h2>
-<p>Statistical meta-features are the standard statistical measures to describe the numerical properties of a distribution of data. As it requires only numerical attributes, the categorical data are transformed to numerical. For instance, <code>cor</code> and <code>skewness</code> are the absolute correlation between of each pair of attributes and the skewness of the numeric attributes in the dataset, respectively. To list the measures of this group use <code>ls.statistical()</code>. The following examples illustrate these measures:</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="co">## Show the the available statistical measures</span></a>
-<a class="sourceLine" id="cb12-2" data-line-number="2"><span class="kw">ls.statistical</span>()</a></code></pre></div>
+
+<p>Statistical meta-features are the standard statistical measures to describe the 
+numerical properties of a distribution of data. As it requires only numerical 
+attributes, the categorical data are transformed to numerical. For instance, 
+<code>cor</code> and <code>skewness</code> are the absolute correlation between of each pair of 
+attributes and the skewness of the numeric attributes in the dataset, 
+respectively. To list the measures of this group use <code>ls.statistical()</code>. The 
+following examples illustrate these measures:</p>
+
+<pre><code class="r">## Show the the available statistical measures
+ls.statistical()
+</code></pre>
+
 <pre><code>##  [1] &quot;canCor&quot;      &quot;gravity&quot;     &quot;cor&quot;         &quot;cov&quot;         &quot;nrDisc&quot;     
 ##  [6] &quot;eigenvalues&quot; &quot;gMean&quot;       &quot;hMean&quot;       &quot;iqRange&quot;     &quot;kurtosis&quot;   
 ## [11] &quot;mad&quot;         &quot;max&quot;         &quot;mean&quot;        &quot;median&quot;      &quot;min&quot;        
 ## [16] &quot;nrCorAttr&quot;   &quot;nrNorm&quot;      &quot;nrOutliers&quot;  &quot;range&quot;       &quot;sd&quot;         
 ## [21] &quot;sdRatio&quot;     &quot;skewness&quot;    &quot;sparsity&quot;    &quot;tMean&quot;       &quot;var&quot;        
-## [26] &quot;wLambda&quot;</code></pre>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="co">## Extract all statistical measures</span></a>
-<a class="sourceLine" id="cb14-2" data-line-number="2">stat.iris &lt;-<span class="st"> </span><span class="kw">statistical</span>(Species <span class="op">~</span><span class="st"> </span>., iris)</a>
-<a class="sourceLine" id="cb14-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb14-4" data-line-number="4"><span class="co">## Extract two statistical measures</span></a>
-<a class="sourceLine" id="cb14-5" data-line-number="5"><span class="kw">statistical</span>(Species <span class="op">~</span><span class="st"> </span>., iris, <span class="dt">features=</span><span class="kw">c</span>(<span class="st">&quot;cor&quot;</span>, <span class="st">&quot;skewness&quot;</span>))</a></code></pre></div>
+## [26] &quot;wLambda&quot;
+</code></pre>
+
+<pre><code class="r">## Extract all statistical measures
+stat.iris &lt;- statistical(Species ~ ., iris)
+
+## Extract two statistical measures
+statistical(Species ~ ., iris, features=c(&quot;cor&quot;, &quot;skewness&quot;))
+</code></pre>
+
 <pre><code>## $cor
 ##      mean        sd 
 ## 0.5941160 0.3375443 
 ## 
 ## $skewness
 ##       mean         sd 
-## 0.06273198 0.29439896</code></pre>
-<p>The statistical group can use two additional parameter called <code>by.class</code> and <code>transform</code>. To the former the default is <code>by.class=FALSE</code> which means that the meta-features are computed without consider the classes values. Otherwise, the measure is extracted using the instances separated by class. In the latter, the default value is <code>transform=TRUE</code> which means that categorical attributes will be transformed to numeric. The following example shows the use of these two definitions:</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="co">## Extract correlation using instances by classes</span></a>
-<a class="sourceLine" id="cb16-2" data-line-number="2"><span class="kw">statistical</span>(Species <span class="op">~</span><span class="st"> </span>., iris, <span class="dt">features=</span><span class="st">&quot;cor&quot;</span>, <span class="dt">by.class=</span><span class="ot">TRUE</span>)</a></code></pre></div>
+## 0.06273198 0.29439896
+</code></pre>
+
+<p>The statistical group can use two additional parameter called <code>by.class</code> and 
+<code>transform</code>. To the former the default is <code>by.class=FALSE</code> which means that the 
+meta-features are computed without consider the classes values. Otherwise, 
+the measure is extracted using the instances separated by class. In the latter, 
+the default value is <code>transform=TRUE</code> which means that categorical attributes 
+will be transformed to numeric. The following example shows the use of these 
+two definitions:</p>
+
+<pre><code class="r">## Extract correlation using instances by classes
+statistical(Species ~ ., iris, features=&quot;cor&quot;, by.class=TRUE)
+</code></pre>
+
 <pre><code>## $cor
 ##      mean        sd 
-## 0.4850530 0.2124471</code></pre>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1"><span class="co">## Ignore the class attributes</span></a>
-<a class="sourceLine" id="cb18-2" data-line-number="2">aux &lt;-<span class="st"> </span><span class="kw">cbind</span>(<span class="dt">class=</span>iris<span class="op">$</span>Species, iris)</a>
-<a class="sourceLine" id="cb18-3" data-line-number="3"><span class="kw">statistical</span>(Species <span class="op">~</span><span class="st"> </span>., aux, <span class="dt">transform=</span><span class="ot">FALSE</span>)</a></code></pre></div>
+## 0.4850530 0.2124471
+</code></pre>
+
+<pre><code class="r">## Ignore the class attributes
+aux &lt;- cbind(class=iris$Species, iris)
+statistical(Species ~ ., aux, transform=FALSE)
+</code></pre>
+
 <pre><code>## $canCor
 ##      mean        sd 
 ## 0.7280090 0.3631869 
@@ -514,28 +511,55 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 ## 1.143239 1.332546 
 ## 
 ## $wLambda
-## [1] 0.02343863</code></pre>
-<p>Note that, in the first example the values and the cardinality of the measure are different since the correlation between the attributes were computed using the instances for each class separately. The <code>post.processing</code> methods are applied in these measures since they return multiple values. To define which them should be applied use the <code>summary</code> parameter, as detailed in the <code>post.processing</code> method.</p>
-</div>
-<div id="information-theoretical" class="section level2">
+## [1] 0.02343863
+</code></pre>
+
+<p>Note that, in the first example the values and the cardinality of the measure 
+are different since the correlation between the attributes were computed using 
+the instances for each class separately. The <code>post.processing</code> methods are 
+applied in these measures since they return multiple values. To define which 
+them should be applied use the <code>summary</code> parameter, as detailed in the 
+<code>post.processing</code> method.</p>
+
 <h2>Information Theoretical</h2>
-<p>Information theoretical meta-features are particularly appropriate to describe discrete (categorical) attributes, but they also fit continuous ones using a discretization process. These measures are based on information theory. For instance, <code>normClassEnt</code> and <code>mutInf</code> are the normalized entropy of the class and the common information shared between each attribute and the class in the dataset, respectively. To list the measures of this group use <code>ls.infotheo()</code>. The following examples illustrate these measures:</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1"><span class="co">## Show the the available information theoretical measures</span></a>
-<a class="sourceLine" id="cb20-2" data-line-number="2"><span class="kw">ls.infotheo</span>()</a></code></pre></div>
+
+<p>Information theoretical meta-features are particularly appropriate to describe
+discrete (categorical) attributes, but they also fit continuous ones using a 
+discretization process. These measures are based on information theory. For 
+instance, <code>normClassEnt</code> and <code>mutInf</code> are the normalized entropy of the class 
+and the common information shared between each attribute and the class in the 
+dataset, respectively. To list the measures of this group use <code>ls.infotheo()</code>. 
+The following examples illustrate these measures:</p>
+
+<pre><code class="r">## Show the the available information theoretical measures
+ls.infotheo()
+</code></pre>
+
 <pre><code>## [1] &quot;attrConc&quot;  &quot;attrEnt&quot;   &quot;classConc&quot; &quot;classEnt&quot;  &quot;eqNumAttr&quot; &quot;jointEnt&quot; 
-## [7] &quot;mutInf&quot;    &quot;nsRatio&quot;</code></pre>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" data-line-number="1"><span class="co">## Extract all information theoretical measures</span></a>
-<a class="sourceLine" id="cb22-2" data-line-number="2">inf.iris &lt;-<span class="st"> </span><span class="kw">infotheo</span>(Species <span class="op">~</span><span class="st"> </span>., iris)</a>
-<a class="sourceLine" id="cb22-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb22-4" data-line-number="4"><span class="co">## Extract two information theoretical measures</span></a>
-<a class="sourceLine" id="cb22-5" data-line-number="5"><span class="kw">infotheo</span>(Species <span class="op">~</span><span class="st"> </span>., iris, <span class="dt">features=</span><span class="kw">c</span>(<span class="st">&quot;normClassEnt&quot;</span>, <span class="st">&quot;mutInf&quot;</span>))</a></code></pre></div>
+## [7] &quot;mutInf&quot;    &quot;nsRatio&quot;
+</code></pre>
+
+<pre><code class="r">## Extract all information theoretical measures
+inf.iris &lt;- infotheo(Species ~ ., iris)
+
+## Extract two information theoretical measures
+infotheo(Species ~ ., iris, features=c(&quot;normClassEnt&quot;, &quot;mutInf&quot;))
+</code></pre>
+
 <pre><code>## $mutInf
 ##      mean        sd 
-## 0.8439342 0.4222026</code></pre>
-<p>The Information theoretical group can use one additional parameter called <code>transform</code>. Using the default value <code>transform=TRUE</code> the continuous attributes will be discretized. The following example shows the use of this definition:</p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" data-line-number="1"><span class="co">## Ignore the discretization process</span></a>
-<a class="sourceLine" id="cb24-2" data-line-number="2">aux &lt;-<span class="st"> </span><span class="kw">cbind</span>(<span class="dt">class=</span>iris<span class="op">$</span>Species, iris)</a>
-<a class="sourceLine" id="cb24-3" data-line-number="3"><span class="kw">infotheo</span>(Species <span class="op">~</span><span class="st"> </span>., aux, <span class="dt">transform=</span><span class="ot">FALSE</span>)</a></code></pre></div>
+## 0.8439342 0.4222026
+</code></pre>
+
+<p>The Information theoretical group can use one additional parameter called 
+<code>transform</code>. Using the default value <code>transform=TRUE</code> the continuous attributes 
+will be discretized. The following example shows the use of this definition:</p>
+
+<pre><code class="r">## Ignore the discretization process
+aux &lt;- cbind(class=iris$Species, iris)
+infotheo(Species ~ ., aux, transform=FALSE)
+</code></pre>
+
 <pre><code>## $attrConc
 ## mean   sd 
 ##   NA   NA 
@@ -563,158 +587,263 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 ## 1.584963       NA 
 ## 
 ## $nsRatio
-## [1] 0</code></pre>
-<p>The information theoretical measures return a list named by the requested measures. The <code>post.processing</code> methods are applied in some measures since they return multiple values. To define which them should be applied use the <code>summary</code> parameter, as detailed in the section <strong>Post Processing Methods</strong>.</p>
-</div>
-<div id="model-based" class="section level2">
+## [1] 0
+</code></pre>
+
+<p>The information theoretical measures return a list named by the requested 
+measures. The <code>post.processing</code> methods are applied in some measures since they 
+return multiple values. To define which them should be applied use the 
+<code>summary</code> parameter, as detailed in the section <strong>Post Processing Methods</strong>.</p>
+
 <h2>Model based</h2>
-<p>These measures describe characteristics of the investigated models. These meta-features can include, for example, the description of the DT induced for a dataset, like its number of leaves (<code>leaves</code>) and the number of nodes (<code>nodes</code>) of the tree. The following examples illustrate these measures:</p>
-<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" data-line-number="1"><span class="co">## Show the the available model.based measures</span></a>
-<a class="sourceLine" id="cb26-2" data-line-number="2"><span class="kw">ls.model.based</span>()</a></code></pre></div>
+
+<p>These measures describe characteristics of the investigated models. These 
+meta-features can include, for example, the description of the DT induced for a 
+dataset, like its number of leaves (<code>leaves</code>) and the number of nodes (<code>nodes</code>) 
+of the tree. The following examples illustrate these measures:</p>
+
+<pre><code class="r">## Show the the available model.based measures
+ls.model.based()
+</code></pre>
+
 <pre><code>##  [1] &quot;leaves&quot;         &quot;leavesBranch&quot;   &quot;leavesCorrob&quot;   &quot;leavesHomo&quot;    
 ##  [5] &quot;leavesPerClass&quot; &quot;nodes&quot;          &quot;nodesPerAttr&quot;   &quot;nodesPerInst&quot;  
 ##  [9] &quot;nodesPerLevel&quot;  &quot;nodesRepeated&quot;  &quot;treeDepth&quot;      &quot;treeImbalance&quot; 
-## [13] &quot;treeShape&quot;      &quot;varImportance&quot;</code></pre>
-<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb28-1" data-line-number="1"><span class="co">## Extract all model.based measures</span></a>
-<a class="sourceLine" id="cb28-2" data-line-number="2">land.iris &lt;-<span class="st"> </span><span class="kw">model.based</span>(Species <span class="op">~</span><span class="st"> </span>., iris)</a>
-<a class="sourceLine" id="cb28-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb28-4" data-line-number="4"><span class="co">## Extract three model.based measures</span></a>
-<a class="sourceLine" id="cb28-5" data-line-number="5"><span class="kw">model.based</span>(Species <span class="op">~</span><span class="st"> </span>., iris, <span class="dt">features=</span><span class="kw">c</span>(<span class="st">&quot;leaves&quot;</span>, <span class="st">&quot;nodes&quot;</span>))</a></code></pre></div>
+## [13] &quot;treeShape&quot;      &quot;varImportance&quot;
+</code></pre>
+
+<pre><code class="r">## Extract all model.based measures
+land.iris &lt;- model.based(Species ~ ., iris)
+
+## Extract three model.based measures
+model.based(Species ~ ., iris, features=c(&quot;leaves&quot;, &quot;nodes&quot;))
+</code></pre>
+
 <pre><code>## $leaves
 ## [1] 9
 ## 
 ## $nodes
-## [1] 8</code></pre>
-<p>The DT model based measures return a list named by the requested measures. The <code>post.processing</code> methods are applied in these measures since they return multiple values. To define which them should be applied use the <code>summary</code> parameter, as detailed in the <code>post.processing</code> method.</p>
-</div>
-<div id="landmarking" class="section level2">
+## [1] 8
+</code></pre>
+
+<p>The DT model based measures return a list named by the requested measures. The 
+<code>post.processing</code> methods are applied in these measures since they return 
+multiple values. To define which them should be applied use the <code>summary</code> 
+parameter, as detailed in the <code>post.processing</code> method.</p>
+
 <h2>Landmarking</h2>
-<p>Landmarking measures are simple and fast algorithms, from which performance characteristics can be extracted. These measures include the performance of simple and efficient learning algorithms like Naive Bayes (<code>naiveBayes</code>) and 1-Nearest Neighbor (<code>oneNN</code>). The following examples illustrate these measures:</p>
-<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb30-1" data-line-number="1"><span class="co">## Show the the available landmarking measures</span></a>
-<a class="sourceLine" id="cb30-2" data-line-number="2"><span class="kw">ls.landmarking</span>()</a></code></pre></div>
+
+<p>Landmarking measures are simple and fast algorithms, from which performance 
+characteristics can be extracted. These measures include the performance of 
+simple and efficient learning algorithms like Naive Bayes (<code>naiveBayes</code>) and 
+1-Nearest Neighbor (<code>oneNN</code>). The following examples illustrate these measures:</p>
+
+<pre><code class="r">## Show the the available landmarking measures
+ls.landmarking()
+</code></pre>
+
 <pre><code>## [1] &quot;bestNode&quot;    &quot;eliteNN&quot;     &quot;linearDiscr&quot; &quot;naiveBayes&quot;  &quot;oneNN&quot;      
-## [6] &quot;randomNode&quot;  &quot;worstNode&quot;</code></pre>
-<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb32-1" data-line-number="1"><span class="co">## Extract all landmarking measures</span></a>
-<a class="sourceLine" id="cb32-2" data-line-number="2">land.iris &lt;-<span class="st"> </span><span class="kw">landmarking</span>(Species <span class="op">~</span><span class="st"> </span>., iris)</a>
-<a class="sourceLine" id="cb32-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb32-4" data-line-number="4"><span class="co">## Extract two landmarking measures</span></a>
-<a class="sourceLine" id="cb32-5" data-line-number="5"><span class="kw">landmarking</span>(Species <span class="op">~</span><span class="st"> </span>., iris, <span class="dt">features=</span><span class="kw">c</span>(<span class="st">&quot;naiveBayes&quot;</span>, <span class="st">&quot;oneNN&quot;</span>))</a></code></pre></div>
+## [6] &quot;randomNode&quot;  &quot;worstNode&quot;
+</code></pre>
+
+<pre><code class="r">## Extract all landmarking measures
+land.iris &lt;- landmarking(Species ~ ., iris)
+
+## Extract two landmarking measures
+landmarking(Species ~ ., iris, features=c(&quot;naiveBayes&quot;, &quot;oneNN&quot;))
+</code></pre>
+
 <pre><code>## $naiveBayes
 ##       mean         sd 
-## 0.96000000 0.04661373 
+## 0.94666667 0.06885304 
 ## 
 ## $oneNN
-##       mean         sd 
-## 0.95333333 0.05488484</code></pre>
-<p>The performance extraction of these measures without a cross validation step can cause model overfitting in the data. Therefore the <code>landmarking</code> function has the parameter <code>folds</code> to define the number of <code>k</code>-fold cross-validation and the parameter <code>score</code> to select the performance measure. The following example show how to set this value:</p>
-<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb34-1" data-line-number="1"><span class="co">## Extract one landmarking measures with folds=2</span></a>
-<a class="sourceLine" id="cb34-2" data-line-number="2"><span class="kw">landmarking</span>(Species <span class="op">~</span><span class="st"> </span>., iris, <span class="dt">features=</span><span class="st">&quot;naiveBayes&quot;</span>, <span class="dt">folds=</span><span class="dv">2</span>)</a></code></pre></div>
+##     mean       sd 
+## 0.940000 0.073367
+</code></pre>
+
+<p>The performance extraction of these measures without a cross validation step can
+ cause model overfitting in the data. Therefore the <code>landmarking</code> function 
+has the parameter <code>folds</code> to define the number of <code>k</code>-fold cross-validation and
+the parameter <code>score</code> to select the performance measure. The following example 
+show how to set this value:</p>
+
+<pre><code class="r">## Extract one landmarking measures with folds=2
+landmarking(Species ~ ., iris, features=&quot;naiveBayes&quot;, folds=2)
+</code></pre>
+
 <pre><code>## $naiveBayes
 ##       mean         sd 
-## 0.95333333 0.02828427</code></pre>
-<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb36-1" data-line-number="1"><span class="co">## Extract one landmarking measures with folds=2</span></a>
-<a class="sourceLine" id="cb36-2" data-line-number="2"><span class="kw">landmarking</span>(Species <span class="op">~</span><span class="st"> </span>., iris, <span class="dt">features=</span><span class="st">&quot;naiveBayes&quot;</span>, <span class="dt">score=</span><span class="st">&quot;kappa&quot;</span>)</a></code></pre></div>
+## 0.96000000 0.01885618
+</code></pre>
+
+<pre><code class="r">## Extract one landmarking measures with folds=2
+landmarking(Species ~ ., iris, features=&quot;naiveBayes&quot;, score=&quot;kappa&quot;)
+</code></pre>
+
 <pre><code>## $naiveBayes
 ##       mean         sd 
-## 0.93729051 0.07213352</code></pre>
-<p>The landmarking measures return a list named by the requested measures. The <code>post.processing</code> methods are applied in these measures since they return multiple values. To define which them should be applied use the <code>summary</code> parameter, as detailed in the <code>post.processing</code> method.</p>
-</div>
-<div id="relative" class="section level2">
+## 0.92741572 0.08488776
+</code></pre>
+
+<p>The landmarking measures return a list named by the requested measures. The 
+<code>post.processing</code> methods are applied in these measures since they return 
+multiple values. To define which them should be applied use the <code>summary</code> 
+parameter, as detailed in the <code>post.processing</code> method.</p>
+
 <h2>Relative</h2>
-<p>The relative group is the landmarking with sampling and ranking strategies. The sampling strategy decreases the computational cost of the landmarking by selecting a subsample of the original examples. The ranking strategy capture relative information between the performance of the algorithms. The following examples illustrate these measures:</p>
-<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb38-1" data-line-number="1"><span class="co">## Show the the available relative measures</span></a>
-<a class="sourceLine" id="cb38-2" data-line-number="2"><span class="kw">ls.relative</span>()</a></code></pre></div>
+
+<p>The relative group is the landmarking with sampling and ranking strategies. The 
+sampling strategy decreases the computational cost of the landmarking by 
+selecting a subsample of the original examples. The ranking strategy capture 
+relative information between the performance of the algorithms. The following 
+examples illustrate these measures:</p>
+
+<pre><code class="r">## Show the the available relative measures
+ls.relative()
+</code></pre>
+
 <pre><code>## [1] &quot;bestNode&quot;    &quot;eliteNN&quot;     &quot;linearDiscr&quot; &quot;naiveBayes&quot;  &quot;oneNN&quot;      
-## [6] &quot;randomNode&quot;  &quot;worstNode&quot;</code></pre>
-<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb40-1" data-line-number="1"><span class="co">## Extract all relative measures</span></a>
-<a class="sourceLine" id="cb40-2" data-line-number="2">real.iris &lt;-<span class="st"> </span><span class="kw">relative</span>(Species <span class="op">~</span><span class="st"> </span>., iris)</a>
-<a class="sourceLine" id="cb40-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb40-4" data-line-number="4"><span class="co">## Extract all relative measures with half of the samples</span></a>
-<a class="sourceLine" id="cb40-5" data-line-number="5"><span class="kw">relative</span>(Species <span class="op">~</span><span class="st"> </span>., iris, <span class="dt">size=</span><span class="fl">0.5</span>)</a></code></pre></div>
+## [6] &quot;randomNode&quot;  &quot;worstNode&quot;
+</code></pre>
+
+<pre><code class="r">## Extract all relative measures
+real.iris &lt;- relative(Species ~ ., iris)
+
+## Extract all relative measures with half of the samples
+relative(Species ~ ., iris, size=0.5)
+</code></pre>
+
 <pre><code>## $bestNode
 ##          mean sd
-## bestNode    2  6
+## bestNode    3  5
 ## 
 ## $eliteNN
 ##         mean  sd
-## eliteNN  4.5 3.5
+## eliteNN    5 3.5
 ## 
 ## $linearDiscr
 ##             mean sd
-## linearDiscr    6  2
+## linearDiscr    7  1
 ## 
 ## $naiveBayes
 ##            mean sd
-## naiveBayes    7  1
+## naiveBayes    5  2
 ## 
 ## $oneNN
 ##       mean  sd
-## oneNN  4.5 3.5
+## oneNN    5 3.5
 ## 
 ## $randomNode
 ##            mean sd
-## randomNode    3  5
+## randomNode    2  7
 ## 
 ## $worstNode
 ##           mean sd
-## worstNode    1  7</code></pre>
-<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb42-1" data-line-number="1"><span class="co">## Extract two relative measures</span></a>
-<a class="sourceLine" id="cb42-2" data-line-number="2"><span class="kw">relative</span>(Species <span class="op">~</span><span class="st"> </span>., iris, <span class="dt">features=</span><span class="kw">c</span>(<span class="st">&quot;naiveBayes&quot;</span>, <span class="st">&quot;oneNN&quot;</span>))</a></code></pre></div>
+## worstNode    1  6
+</code></pre>
+
+<pre><code class="r">## Extract two relative measures
+relative(Species ~ ., iris, features=c(&quot;naiveBayes&quot;, &quot;oneNN&quot;))
+</code></pre>
+
 <pre><code>## $naiveBayes
 ##            mean sd
-## naiveBayes    2  1
+## naiveBayes    2  2
 ## 
 ## $oneNN
 ##       mean sd
-## oneNN    1  2</code></pre>
-</div>
-<div id="clustering" class="section level2">
+## oneNN    1  1
+</code></pre>
+
 <h2>Clustering</h2>
-<p>Clustering measures extract information about dataset based on external validation indexes. The main ideia is measure the complexity of the dataset using indexes able to check information about the predictive attributes and the label. The following examples illustrate these measures:</p>
-<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb44-1" data-line-number="1"><span class="co">## Show the the available clustering measures</span></a>
-<a class="sourceLine" id="cb44-2" data-line-number="2"><span class="kw">ls.clustering</span>()</a></code></pre></div>
-<pre><code>## [1] &quot;vdu&quot; &quot;vdb&quot; &quot;int&quot; &quot;sil&quot; &quot;pb&quot;  &quot;ch&quot;  &quot;nre&quot; &quot;sc&quot;</code></pre>
-<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb46-1" data-line-number="1"><span class="co">## Extract all clustering measures</span></a>
-<a class="sourceLine" id="cb46-2" data-line-number="2">clus.iris &lt;-<span class="st"> </span><span class="kw">clustering</span>(Species <span class="op">~</span><span class="st"> </span>., iris)</a>
-<a class="sourceLine" id="cb46-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb46-4" data-line-number="4"><span class="co">## Extract two clustering measures</span></a>
-<a class="sourceLine" id="cb46-5" data-line-number="5"><span class="kw">clustering</span>(Species <span class="op">~</span><span class="st"> </span>., iris, <span class="dt">features=</span><span class="kw">c</span>(<span class="st">&quot;vdu&quot;</span>, <span class="st">&quot;vdb&quot;</span>))</a></code></pre></div>
+
+<p>Clustering measures extract information about dataset based on external 
+validation indexes. The main ideia is measure the complexity of the dataset 
+using indexes able to check information about the predictive attributes and the 
+label. The following examples illustrate these measures:</p>
+
+<pre><code class="r">## Show the the available clustering measures
+ls.clustering()
+</code></pre>
+
+<pre><code>## [1] &quot;vdu&quot; &quot;vdb&quot; &quot;int&quot; &quot;sil&quot; &quot;pb&quot;  &quot;ch&quot;  &quot;nre&quot; &quot;sc&quot;
+</code></pre>
+
+<pre><code class="r">## Extract all clustering measures
+clus.iris &lt;- clustering(Species ~ ., iris)
+
+## Extract two clustering measures
+clustering(Species ~ ., iris, features=c(&quot;vdu&quot;, &quot;vdb&quot;))
+</code></pre>
+
 <pre><code>## $vdu
 ## [1] 0.05848053
 ## 
 ## $vdb
-## [1] 0.7513707</code></pre>
-</div>
-</div>
-<div id="post-processing-methods" class="section level1">
+## [1] 0.7513707
+</code></pre>
+
 <h1>Post Processing Methods</h1>
-<p>Several meta-features generate multiple values and <code>mean</code> and <code>sd</code> are the standard method to summary these values. In order to increase the flexibility, the <code>mfe</code> package implemented the post processing methods to deal with multiple measures values. This method is able to deal with descriptive statistic (resulting in a single value) or a distribution (resulting in multiple values).</p>
-<p>The post processing methods are setted using the parameter <code>summary</code>. It is possible to compute min, max, mean, median, kurtosis, standard deviation, among others. Any R method, can be used, as illustrated in the following examples:</p>
-<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb48-1" data-line-number="1"><span class="co">## Apply several statistical measures as post processing</span></a>
-<a class="sourceLine" id="cb48-2" data-line-number="2"><span class="kw">statistical</span>(Species <span class="op">~</span><span class="st"> </span>., iris, <span class="st">&quot;cor&quot;</span>, </a>
-<a class="sourceLine" id="cb48-3" data-line-number="3">               <span class="dt">summary=</span><span class="kw">c</span>(<span class="st">&quot;kurtosis&quot;</span>, <span class="st">&quot;max&quot;</span>, <span class="st">&quot;mean&quot;</span>, <span class="st">&quot;median&quot;</span>, <span class="st">&quot;min&quot;</span>, <span class="st">&quot;sd&quot;</span>, </a>
-<a class="sourceLine" id="cb48-4" data-line-number="4">                         <span class="st">&quot;skewness&quot;</span>, <span class="st">&quot;var&quot;</span>))</a></code></pre></div>
+
+<p>Several meta-features generate multiple values and <code>mean</code> and <code>sd</code> are the 
+standard method to summary these values. In order to increase the flexibility, 
+the <code>mfe</code> package implemented the post processing methods to deal with multiple 
+measures values. This method is able to deal with descriptive statistic 
+(resulting in a single value) or a distribution (resulting in multiple values).</p>
+
+<p>The post processing methods are setted using the parameter <code>summary</code>. It is 
+possible to compute min, max, mean, median, kurtosis, standard deviation, among 
+others. Any R method, can be used, as illustrated in the following examples:</p>
+
+<pre><code class="r">## Apply several statistical measures as post processing
+statistical(Species ~ ., iris, &quot;cor&quot;, 
+               summary=c(&quot;kurtosis&quot;, &quot;max&quot;, &quot;mean&quot;, &quot;median&quot;, &quot;min&quot;, &quot;sd&quot;, 
+                         &quot;skewness&quot;, &quot;var&quot;))
+</code></pre>
+
 <pre><code>## $cor
 ##   kurtosis        max       mean     median        min         sd 
 ## -1.9476130  0.9628654  0.5941160  0.6231906  0.1175698  0.3375443 
 ##   skewness        var 
-## -0.1814291  0.1139362</code></pre>
-<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb50-1" data-line-number="1"><span class="co">## Apply quantile as post processing method</span></a>
-<a class="sourceLine" id="cb50-2" data-line-number="2"><span class="kw">statistical</span>(Species <span class="op">~</span><span class="st"> </span>., iris, <span class="st">&quot;cor&quot;</span>, <span class="dt">summary=</span><span class="st">&quot;quantile&quot;</span>)</a></code></pre></div>
+## -0.1814291  0.1139362
+</code></pre>
+
+<pre><code class="r">## Apply quantile as post processing method
+statistical(Species ~ ., iris, &quot;cor&quot;, summary=&quot;quantile&quot;)
+</code></pre>
+
 <pre><code>## $cor
 ##   quantile.0%  quantile.25%  quantile.50%  quantile.75% quantile.100% 
-##     0.1175698     0.3817045     0.6231906     0.8583006     0.9628654</code></pre>
-<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb52-1" data-line-number="1"><span class="co">## Get the default values without summarize them</span></a>
-<a class="sourceLine" id="cb52-2" data-line-number="2"><span class="kw">statistical</span>(Species <span class="op">~</span><span class="st"> </span>., iris, <span class="st">&quot;cor&quot;</span>, <span class="dt">summary=</span><span class="kw">c</span>())</a></code></pre></div>
+##     0.1175698     0.3817045     0.6231906     0.8583006     0.9628654
+</code></pre>
+
+<pre><code class="r">## Get the default values without summarize them
+statistical(Species ~ ., iris, &quot;cor&quot;, summary=c())
+</code></pre>
+
 <pre><code>## $cor
 ## non.aggregated1 non.aggregated2 non.aggregated3 non.aggregated4 
 ##       0.1175698       0.8717538       0.4284401       0.8179411 
 ## non.aggregated5 non.aggregated6 
-##       0.3661259       0.9628654</code></pre>
-<p>Beyond these R default methods, two additional post processing methods are available in the <code>mfe</code> package: <code>hist</code> and <code>non.aggregated</code>. The first computes a histogram of the values and returns the frequencies of in each bins. The extra parameters <code>bins</code> can be used to define the number of values to be returned. The parameters <code>min</code> and <code>max</code> are used to define the range of the data. The second is a way to obtain all values from the measure and has the same effect of the use of an empty list. The following code illustrate examples of the use of these post processing methods:</p>
-<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb54-1" data-line-number="1"><span class="co">## Apply histogram as post processing method</span></a>
-<a class="sourceLine" id="cb54-2" data-line-number="2"><span class="kw">statistical</span>(Species <span class="op">~</span><span class="st"> </span>., iris, <span class="st">&quot;cor&quot;</span>, <span class="dt">summary=</span><span class="st">&quot;hist&quot;</span>)</a></code></pre></div>
-<p><img src="data:image/png;base64,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" /><!-- --></p>
+##       0.3661259       0.9628654
+</code></pre>
+
+<p>Beyond these R default methods, two additional post processing methods are 
+available in the <code>mfe</code> package: <code>hist</code> and <code>non.aggregated</code>. The first computes 
+a histogram of the values and returns the frequencies of in each bins. The 
+extra parameters <code>bins</code> can be used to define the number of values to be 
+returned. The parameters <code>min</code> and <code>max</code> are used to define the range of the 
+data. The second is a way to obtain all values from the measure and has the 
+same effect of the use of an empty list. The following code illustrate examples 
+of the use of these post processing methods:</p>
+
+<pre><code class="r">## Apply histogram as post processing method
+statistical(Species ~ ., iris, &quot;cor&quot;, summary=&quot;hist&quot;)
+</code></pre>
+
+<p><img src="data:image/png;base64,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" alt="plot of chunk unnamed-chunk-17"/></p>
+
 <pre><code>## $cor
 ##                                                                                                         hist.breaks1 
 ##                                                                                                                  &quot;0&quot; 
@@ -761,28 +890,57 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 ##                                                                                                           hist.xname 
 ## &quot;c(0.117569784133002, 0.871753775886583, 0.42844010433054, 0.817941126271576, 0.366125932536439, 0.962865431402796)&quot; 
 ##                                                                                                        hist.equidist 
-##                                                                                                               &quot;TRUE&quot;</code></pre>
-<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb56-1" data-line-number="1"><span class="co">## Apply histogram as post processing method and customize it</span></a>
-<a class="sourceLine" id="cb56-2" data-line-number="2"><span class="kw">statistical</span>(Species <span class="op">~</span><span class="st"> </span>., iris, <span class="st">&quot;cor&quot;</span>, <span class="dt">summary=</span><span class="st">&quot;hist&quot;</span>, <span class="dt">bins=</span><span class="dv">5</span>, <span class="dt">min=</span><span class="dv">0</span>, <span class="dt">max=</span><span class="dv">1</span>)</a></code></pre></div>
+##                                                                                                               &quot;TRUE&quot;
+</code></pre>
+
+<pre><code class="r">## Apply histogram as post processing method and customize it
+statistical(Species ~ ., iris, &quot;cor&quot;, summary=&quot;hist&quot;, bins=5, min=0, max=1)
+</code></pre>
+
 <pre><code>## Warning in plot.window(xlim, ylim, &quot;&quot;, ...): &quot;bins&quot; is not a graphical
-## parameter</code></pre>
+## parameter
+</code></pre>
+
 <pre><code>## Warning in plot.window(xlim, ylim, &quot;&quot;, ...): &quot;min&quot; is not a graphical
-## parameter</code></pre>
+## parameter
+</code></pre>
+
 <pre><code>## Warning in plot.window(xlim, ylim, &quot;&quot;, ...): &quot;max&quot; is not a graphical
-## parameter</code></pre>
+## parameter
+</code></pre>
+
 <pre><code>## Warning in title(main = main, sub = sub, xlab = xlab, ylab = ylab, ...):
-## &quot;bins&quot; is not a graphical parameter</code></pre>
+## &quot;bins&quot; is not a graphical parameter
+</code></pre>
+
 <pre><code>## Warning in title(main = main, sub = sub, xlab = xlab, ylab = ylab, ...):
-## &quot;min&quot; is not a graphical parameter</code></pre>
+## &quot;min&quot; is not a graphical parameter
+</code></pre>
+
 <pre><code>## Warning in title(main = main, sub = sub, xlab = xlab, ylab = ylab, ...):
-## &quot;max&quot; is not a graphical parameter</code></pre>
-<pre><code>## Warning in axis(1, ...): &quot;bins&quot; is not a graphical parameter</code></pre>
-<pre><code>## Warning in axis(1, ...): &quot;min&quot; is not a graphical parameter</code></pre>
-<pre><code>## Warning in axis(1, ...): &quot;max&quot; is not a graphical parameter</code></pre>
-<pre><code>## Warning in axis(2, ...): &quot;bins&quot; is not a graphical parameter</code></pre>
-<pre><code>## Warning in axis(2, ...): &quot;min&quot; is not a graphical parameter</code></pre>
-<pre><code>## Warning in axis(2, ...): &quot;max&quot; is not a graphical parameter</code></pre>
-<p><img src="data:image/png;base64,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" /><!-- --></p>
+## &quot;max&quot; is not a graphical parameter
+</code></pre>
+
+<pre><code>## Warning in axis(1, ...): &quot;bins&quot; is not a graphical parameter
+</code></pre>
+
+<pre><code>## Warning in axis(1, ...): &quot;min&quot; is not a graphical parameter
+</code></pre>
+
+<pre><code>## Warning in axis(1, ...): &quot;max&quot; is not a graphical parameter
+</code></pre>
+
+<pre><code>## Warning in axis(2, ...): &quot;bins&quot; is not a graphical parameter
+</code></pre>
+
+<pre><code>## Warning in axis(2, ...): &quot;min&quot; is not a graphical parameter
+</code></pre>
+
+<pre><code>## Warning in axis(2, ...): &quot;max&quot; is not a graphical parameter
+</code></pre>
+
+<p><img src="data:image/png;base64,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" alt="plot of chunk unnamed-chunk-17"/></p>
+
 <pre><code>## $cor
 ##                                                                                                         hist.breaks1 
 ##                                                                                                                  &quot;0&quot; 
@@ -829,41 +987,48 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 ##                                                                                                           hist.xname 
 ## &quot;c(0.117569784133002, 0.871753775886583, 0.42844010433054, 0.817941126271576, 0.366125932536439, 0.962865431402796)&quot; 
 ##                                                                                                        hist.equidist 
-##                                                                                                               &quot;TRUE&quot;</code></pre>
-<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb70-1" data-line-number="1"><span class="co">## Extract all correlation values</span></a>
-<a class="sourceLine" id="cb70-2" data-line-number="2"><span class="kw">statistical</span>(Species <span class="op">~</span><span class="st"> </span>., iris, <span class="st">&quot;cor&quot;</span>, <span class="dt">summary=</span><span class="st">&quot;non.aggregated&quot;</span>)</a></code></pre></div>
+##                                                                                                               &quot;TRUE&quot;
+</code></pre>
+
+<pre><code class="r">## Extract all correlation values
+statistical(Species ~ ., iris, &quot;cor&quot;, summary=&quot;non.aggregated&quot;)
+</code></pre>
+
 <pre><code>## $cor
 ## non.aggregated1 non.aggregated2 non.aggregated3 non.aggregated4 
 ##       0.1175698       0.8717538       0.4284401       0.8179411 
 ## non.aggregated5 non.aggregated6 
-##       0.3661259       0.9628654</code></pre>
-<p>It is also possible define an user’s post processing method, like this:</p>
-<div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb72-1" data-line-number="1"><span class="co">## Compute the absolute difference between the mean and the median </span></a>
-<a class="sourceLine" id="cb72-2" data-line-number="2">my.method &lt;-<span class="st"> </span><span class="cf">function</span>(x, ...) <span class="kw">abs</span>(<span class="kw">mean</span>(x) <span class="op">-</span><span class="st"> </span><span class="kw">median</span>(x))</a>
-<a class="sourceLine" id="cb72-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb72-4" data-line-number="4"><span class="co">## Using the user defined post processing method</span></a>
-<a class="sourceLine" id="cb72-5" data-line-number="5"><span class="kw">statistical</span>(Species <span class="op">~</span><span class="st"> </span>., iris, <span class="st">&quot;cor&quot;</span>, <span class="dt">summary=</span><span class="st">&quot;my.method&quot;</span>)</a></code></pre></div>
+##       0.3661259       0.9628654
+</code></pre>
+
+<p>It is also possible define an user&#39;s post processing method, like this:</p>
+
+<pre><code class="r">## Compute the absolute difference between the mean and the median 
+my.method &lt;- function(x, ...) abs(mean(x) - median(x))
+
+## Using the user defined post processing method
+statistical(Species ~ ., iris, &quot;cor&quot;, summary=&quot;my.method&quot;)
+</code></pre>
+
 <pre><code>## $cor
 ##  my.method 
-## 0.02907459</code></pre>
-</div>
-<div id="summary" class="section level1">
+## 0.02907459
+</code></pre>
+
 <h1>Summary</h1>
-<p>In this paper the <code>mfe</code> package, aimed to extract meta-features from dataset, has been introduced. The functions supplied by this package allow both their use in MtL experiments as well as perform data analysis using characterization measures able to describe datasets. Currently, six groups of meta-features can be extracted for any classification dataset. These groups and features represent the standard and the state of the art characterization measures.</p>
-<p>The <code>mfe</code> package was designed to be easily customized and extensible. The development of the <code>mfe</code> package will continue in the near future by including new meta-features, group of measures supporting regression problems and MtL evaluation measures.</p>
-</div>
 
+<p>In this paper the <code>mfe</code> package, aimed to extract meta-features from dataset, 
+has been introduced. The functions supplied by this package allow both their 
+use in MtL experiments as well as perform data analysis using characterization 
+measures able to describe datasets. Currently, six groups of meta-features can 
+be extracted for any classification dataset. These groups and features represent
+the standard and the state of the art characterization measures. </p>
 
-
-<!-- dynamically load mathjax for compatibility with self-contained -->
-<script>
-  (function () {
-    var script = document.createElement("script");
-    script.type = "text/javascript";
-    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
-    document.getElementsByTagName("head")[0].appendChild(script);
-  })();
-</script>
+<p>The <code>mfe</code> package was designed to be easily customized and extensible. The 
+development of the <code>mfe</code> package will continue in the near future by including 
+new meta-features, group of measures supporting regression problems and MtL 
+evaluation measures.</p>
 
 </body>
+
 </html>

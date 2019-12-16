@@ -1,8 +1,8 @@
 Package: mfe
 Type: Package
 Title: Meta-Feature Extractor
-Version: 0.1.3
-Date: 2019-08-26
+Version: 0.1.4
+Date: 2019-12-16
 Authors@R: c(person("Adriano", "Rivolli", email="rivolli@utfpr.edu.br", 
   role=c("aut", "cre")), person("Luis", "P. F. Garcia", 
   email="luis.garcia@unb.br", role="aut"), person("Andre", 
@@ -20,19 +20,20 @@ Description: Extracts meta-features from datasets to support the design of
   Reproducible Empirical Research in Meta-Learning.
 URL: https://github.com/rivolli/mfe
 Depends: R (>= 3.3),
-Imports: cluster, clusterCrit, e1071, infotheo, MASS, rpart, rrcov,
-        stats, utils
+Imports: cluster, clusterCrit, ECoL(>= 0.3), e1071, infotheo, MASS,
+        rpart, rrcov, stats, utils
 Suggests: knitr, rmarkdown, testthat
 License: MIT + file LICENSE
 LazyData: true
 BugReports: https://github.com/rivolli/mfe/issues
 RoxygenNote: 6.1.1
 VignetteBuilder: knitr
+Encoding: UTF-8
 NeedsCompilation: no
-Packaged: 2019-08-26 18:42:33 UTC; rivolli
+Packaged: 2019-12-16 18:03:01 UTC; rivolli
 Author: Adriano Rivolli [aut, cre],
   Luis P. F. Garcia [aut],
   Andre C. P. L. F. de Carvalho [ths]
 Maintainer: Adriano Rivolli <rivolli@utfpr.edu.br>
 Repository: CRAN
-Date/Publication: 2019-08-26 22:20:02 UTC
+Date/Publication: 2019-12-16 20:10:02 UTC
