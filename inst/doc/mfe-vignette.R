@@ -1,4 +1,4 @@
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 library(mfe)
 
 ## Extract all measures using formula
@@ -11,14 +11,14 @@ iris.info <- metafeatures(iris[,1:4], iris[,5])
 iris.info <- metafeatures(Species ~ ., iris, 
                           groups=c("general", "statistical", "infotheo"))
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 ## Compute all measures using min, median and max 
 iris.info <- metafeatures(Species ~ ., iris, summary=c("min", "median", "max"))
                           
 ## Compute all measures using quantile
 iris.info <- metafeatures(Species ~ ., iris, summary="quantile")
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 ## Extract two information theoretical measures
 stat.iris <- infotheo(Species ~ ., iris, 
                          features=c("attrEnt", "jointEnt"))
@@ -31,11 +31,11 @@ disc.iris <- statistical(Species ~ ., iris,
 hist.iris <- statistical(Species ~ ., iris, 
                             features="cor", summary="hist")
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 ## Show the the available groups
 ls.metafeatures()
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 ## Show the the available general measures
 ls.general()
 
@@ -45,11 +45,11 @@ general.iris <- general(Species ~ ., iris)
 ## Extract two general measures
 general(Species ~ ., iris, features=c("nrAttr", "nrClass"))
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 ## Extract two general measures
 general(Species ~ ., iris, features="freqClass", summary=c("min", "max", "sd"))
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 ## Show the the available statistical measures
 ls.statistical()
 
@@ -59,7 +59,7 @@ stat.iris <- statistical(Species ~ ., iris)
 ## Extract two statistical measures
 statistical(Species ~ ., iris, features=c("cor", "skewness"))
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 ## Extract correlation using instances by classes
 statistical(Species ~ ., iris, features="cor", by.class=TRUE)
 
@@ -67,7 +67,7 @@ statistical(Species ~ ., iris, features="cor", by.class=TRUE)
 aux <- cbind(class=iris$Species, iris)
 statistical(Species ~ ., aux, transform=FALSE)
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 ## Show the the available information theoretical measures
 ls.infotheo()
 
@@ -77,12 +77,12 @@ inf.iris <- infotheo(Species ~ ., iris)
 ## Extract two information theoretical measures
 infotheo(Species ~ ., iris, features=c("normClassEnt", "mutInf"))
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 ## Ignore the discretization process
 aux <- cbind(class=iris$Species, iris)
 infotheo(Species ~ ., aux, transform=FALSE)
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 ## Show the the available model.based measures
 ls.model.based()
 
@@ -92,7 +92,7 @@ land.iris <- model.based(Species ~ ., iris)
 ## Extract three model.based measures
 model.based(Species ~ ., iris, features=c("leaves", "nodes"))
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 ## Show the the available landmarking measures
 ls.landmarking()
 
@@ -102,14 +102,14 @@ land.iris <- landmarking(Species ~ ., iris)
 ## Extract two landmarking measures
 landmarking(Species ~ ., iris, features=c("naiveBayes", "oneNN"))
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 ## Extract one landmarking measures with folds=2
 landmarking(Species ~ ., iris, features="naiveBayes", folds=2)
 
 ## Extract one landmarking measures with folds=2
 landmarking(Species ~ ., iris, features="naiveBayes", score="kappa")
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 ## Show the the available relative measures
 ls.relative()
 
@@ -122,7 +122,7 @@ relative(Species ~ ., iris, size=0.5)
 ## Extract two relative measures
 relative(Species ~ ., iris, features=c("naiveBayes", "oneNN"))
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 ## Show the the available clustering measures
 ls.clustering()
 
@@ -132,7 +132,7 @@ clus.iris <- clustering(Species ~ ., iris)
 ## Extract two clustering measures
 clustering(Species ~ ., iris, features=c("vdu", "vdb"))
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 ## Apply several statistical measures as post processing
 statistical(Species ~ ., iris, "cor", 
                summary=c("kurtosis", "max", "mean", "median", "min", "sd", 
@@ -144,7 +144,7 @@ statistical(Species ~ ., iris, "cor", summary="quantile")
 ## Get the default values without summarize them
 statistical(Species ~ ., iris, "cor", summary=c())
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 ## Apply histogram as post processing method
 statistical(Species ~ ., iris, "cor", summary="hist")
 
@@ -154,7 +154,7 @@ statistical(Species ~ ., iris, "cor", summary="hist", bins=5, min=0, max=1)
 ## Extract all correlation values
 statistical(Species ~ ., iris, "cor", summary="non.aggregated")
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 ## Compute the absolute difference between the mean and the median 
 my.method <- function(x, ...) abs(mean(x) - median(x))
 
